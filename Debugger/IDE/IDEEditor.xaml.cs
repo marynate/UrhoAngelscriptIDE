@@ -265,7 +265,7 @@ namespace Debugger.IDE {
                     return;
 
             }
-            char KEY = KeyBullshit.GetCharFromKey(e.Key);
+            char KEY = KeyHelpers.GetCharFromKey(e.Key);
             if (KEY == ')' || KEY == ';') {
                 if (currentComp != null)
                     currentComp.Close();

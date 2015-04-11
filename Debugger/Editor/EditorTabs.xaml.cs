@@ -73,7 +73,7 @@ namespace Debugger.Editor {
                 CodeEditor editor = OpenFile(fileData);
                 editor.Editor.TextArea.Caret.Line = aLine;
                 editor.Editor.ScrollToLine(aLine);
-                editor.Invalidate();
+                editor.InvalidateVisual();
             }
         }
 

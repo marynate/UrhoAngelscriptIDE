@@ -24,6 +24,15 @@ namespace Debugger.IDE {
             InitializeComponent();
         }
 
+        public IDEEditor OpenFile(FileBaseItem aFile, int aLine)
+        {
+            IDEEditor ret = OpenFile(aFile);
+            ret.Editor.TextArea.Caret.Line = aLine;
+            ret.Editor.ScrollToLine(aLine);
+            ret.InvalidateArrange();
+            return ret;
+        }
+
         public IDEEditor OpenFile(FileBaseItem aFile) {
             foreach (TabItem item in tabs.Items) {
                 if (item.Tag.Equals(aFile.Path)) {

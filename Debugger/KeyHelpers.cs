@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Debugger {
-    public static class KeyBullshit {
+    public static class KeyHelpers {
         public enum MapType : uint {
             MAPVK_VK_TO_VSC = 0x0,
             MAPVK_VSC_TO_VK = 0x1,

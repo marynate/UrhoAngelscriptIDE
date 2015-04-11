@@ -111,7 +111,7 @@
     <Compile Include="Editor\LineHighlighter.cs" />
     <Compile Include="Editor\SearchResultBackgroundRenderer.cs" />
     <Compile Include="ErrorHandler.cs" />
-    <Compile Include="FileBullshit.cs" />
+    <Compile Include="FileOperationWrapper.cs" />
     <Compile Include="IDE\Activity\APIDocWatcher.cs" />
     <Compile Include="IDE\Activity\CompilerActivity.cs" />
     <Compile Include="IDE\Activity\IDBBuilderActivity.cs" />
@@ -166,7 +166,7 @@
     </Compile>
     <Compile Include="Json\JsonLoader.cs" />
     <Compile Include="Json\JWrapper.cs" />
-    <Compile Include="KeyBullshit.cs" />
+    <Compile Include="KeyHelpers.cs" />
     <Compile Include="Debugger\CodeValue.cs" />
     <Compile Include="Debugger\FileData.cs" />
     <Compile Include="Debugger\LogMessage.cs" />
@@ -186,6 +186,8 @@
     <Compile Include="Screens\LaunchScreen.xaml.cs">
       <DependentUpon>LaunchScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Search\FileSearch.cs" />
+    <Compile Include="Search\ISearchService.cs" />
     <Compile Include="SettingsDlg.xaml.cs">
       <DependentUpon>SettingsDlg.xaml</DependentUpon>
     </Compile>

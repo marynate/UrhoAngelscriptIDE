@@ -79,6 +79,10 @@
                                 </Style>
                             </TreeView.ItemContainerStyle>
                             <TreeView.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Green" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="Green" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="Black" />
                                 <HierarchicalDataTemplate DataType="{x:Type IDE:Folder}" ItemsSource="{Binding Children}">
                                     <StackPanel Orientation="Horizontal" Tag="{Binding}">
                                         <StackPanel.ContextMenu>
@@ -249,7 +253,9 @@
                             </StackPanel>
                             <DataGrid Name="gridSearch" Grid.Row="1" ItemsSource="{Binding SearchResults}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="True">
                                 <DataGrid.Columns>
+                                    <DataGridTextColumn Header="File" Binding="{Binding ShortFile}" />
                                     <DataGridTextColumn Header="Results" Binding="{Binding Text}" />
+                                    <DataGridTextColumn Header="Line" Binding="{Binding Line}" />
                                 </DataGrid.Columns>
                                 <DataGrid.Resources>
                                     <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">

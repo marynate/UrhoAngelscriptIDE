@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.IO;
 using System.Collections.ObjectModel;
 using FirstFloor.ModernUI.Windows.Controls;
+using System.Diagnostics;
 
 namespace Debugger.IDE {
     /// <summary>
@@ -199,9 +200,9 @@ namespace Debugger.IDE {
             DataGridRow row = sender as DataGridRow;
             SearchResult result = row.DataContext as SearchResult;
             ideTabs.OpenFile(new FileLeafItem {
-                Path = IDEProject.inst().ProjectDir + result.File,
-                Name = result.File.Replace("\\","")
-            });
+                Path = result.File,
+                Name = System.IO.Path.GetFileName(result.File)
+            }, result.Line);
         }
 
         private void txtSearchClasses_PreviewKeyDown(object sender, KeyEventArgs e) {
@@ -282,6 +283,14 @@ namespace Debugger.IDE {
                 }
                 return;
             }
+            Process pi = new Process();
+            pi.StartInfo.FileName = IDEProject.inst().Settings.RunExe;
+            pi.StartInfo.Arguments = IDEProject.inst().Settings.CompilerPath + " " + IDEProject.inst().Settings.RunParams;
+            pi.EnableRaisingEvents = true;
+            pi.StartInfo.UseShellExecute = false;
+            pi.StartInfo.CreateNoWindow = false;
+            pi.StartInfo.RedirectStandardOutput = false;
+            pi.Start();
         }
 
         private void btnDebug_Click(object sender, RoutedEventArgs e) {
@@ -291,6 +300,14 @@ namespace Debugger.IDE {
                 }
                 return;
             }
+            Process pi = new Process();
+            pi.StartInfo.FileName = IDEProject.inst().Settings.DebugExe;
+            pi.StartInfo.Arguments = IDEProject.inst().Settings.CompilerPath + " " + IDEProject.inst().Settings.DebugParams;
+            pi.EnableRaisingEvents = true;
+            pi.StartInfo.UseShellExecute = false;
+            pi.StartInfo.CreateNoWindow = false;
+            pi.StartInfo.RedirectStandardOutput = false;
+            pi.Start();
         }
     }
 }
