@@ -363,12 +363,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\FirstFloor.ModernUI\FirstFloor.ModernUI\FirstFloor.ModernUI.csproj">
-      <Project>{9a653a28-fe46-40e8-a14f-48b0e325165d}</Project>
-      <Name>FirstFloor.ModernUI</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="IDE\Model\" />
   </ItemGroup>
   <ItemGroup>
@@ -439,6 +433,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\dark\appbar.save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FirstFloor.ModernUI\FirstFloor.ModernUI\FirstFloor.ModernUI.csproj">
+      <Project>{9a653a28-fe46-40e8-a14f-48b0e325165d}</Project>
+      <Name>FirstFloor.ModernUI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
