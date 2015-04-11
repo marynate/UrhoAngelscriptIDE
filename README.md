@@ -84,12 +84,32 @@ After a successful compilation the script compiler will be used again in order t
 
 # Debugger Functionality
 
-## Connections
+### Connections
 
-## Breakpoints
+You may connect to a debug daemon for the launch screen of the IDE or use the the "Debug" link at the top to go to the debugger without connection.
 
-## Execution Control
+If the Debugger is not connected to an asPEEK daemon it will display a "Disconnected from server..." bar at the bottom. In the bar you may enter the address of the daemon you wish to connect to and attempt to connect/reconnect.
 
-## Callstack
+### Remote Files
 
-## Locals, This, and Watches
+When connected to a daemon you'll receive a list of remote files. Double clicking on any file will open it in the editor. In the editor you may use the margin to set/unset breakpoints.
+
+### Breakpoints
+
+Breakpoints may be set/unset in the editor. A list of breakpoints is available in which you may reset/unset breakpoints, or use delete to remove the breakpoint completely.
+
+### Execution Control
+
+When execution is halted you may use the buttons at the top, left, or the shortcuts to Continue (F5), Step Over (F10), Step-In (F11), or Step-Out (Shift + F11)
+
+### Callstack
+
+When execution is halted the callstack will be displayed. The topmost entry is the current position. Double click on any callstack entry will open the file in question (if not opened) and move the focus to the line.
+
+### Locals, This, and Watches
+
+When execution halts a full list of the local variables on the stack, the "this" object (if it exists), and the values of globals will be sent to the debugger. They may be seen in their respective tabs. Double clicking a leaf in these views will edit the value (if possible), and right clicking will allow the placement of a "watch." Hovering over a complex type will reveal the type name (Vector3, RigidBody, etc)
+
+Many Urho3D types will display additional information, such as the pointer address in hex, the size of a resource, etc.
+
+During each step (or new halt) the values of "watched" variables will be re-evaluated if possible. You may force re-evaluation, and may manually enter the path to the variable to watch.
