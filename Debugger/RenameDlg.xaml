@@ -1,0 +1,12 @@
+﻿<mui:ModernDialog x:Class="Debugger.RenameDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        Title="Rename" Height="300" Width="300">
+    <Grid>
+    <StackPanel VerticalAlignment="Top">
+        <TextBlock Name="txtMsg"/>
+        <TextBox MinWidth="160" Name="txtValue" />
+    </StackPanel>
+    </Grid>
+</mui:ModernDialog>

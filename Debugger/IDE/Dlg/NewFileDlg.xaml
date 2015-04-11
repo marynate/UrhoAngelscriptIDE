@@ -1,0 +1,20 @@
+﻿<mui:ModernDialog x:Class="Debugger.IDE.Dlg.NewFileDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        Title="Create File" Height="300" Width="300">
+    <Grid>
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+        <Label Content="Name" VerticalAlignment="Center"/>
+        <TextBox Name="txtFileName" MinWidth="160" />
+        <ComboBox Name="comboType" SelectedIndex="0">
+            <ComboBox.Items>
+                <ComboBoxItem Content="Script" Tag="script" />
+                <ComboBoxItem Content="Material" Tag="material" />
+                <ComboBoxItem Content="Shader" Tag="shader" />
+                <ComboBoxItem Content="Particle Effect" Tag="effect" />
+            </ComboBox.Items>
+        </ComboBox>
+    </StackPanel>
+    </Grid>
+</mui:ModernDialog>

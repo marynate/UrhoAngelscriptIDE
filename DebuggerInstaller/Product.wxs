@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="9574390a-fe3c-4468-b99c-ecbd588b99fe" Name="asDevelop" Language="1033" Version="1.0.0.0" Manufacturer="JSandusky" UpgradeCode="cb44d690-5379-4e2e-b2f7-33941e5249ee">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+		<Feature Id="ProductFeature" Title="asDevelop" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+
+        <Feature Id="ToolsFeature" Title="asDevelop Tools" Level="1">
+            <ComponentGroupRef Id="ToolsComponents" />
+        </Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+                <Directory Id="INSTALLFOLDER" Name="asDevelop">
+                    <Directory Id="BINFOLDER" Name="bin" />
+                </Directory>
+            </Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+            <Component Id="APP" Guid="ea18b227-517c-427b-aee4-74a5c51e9278">
+                <File Id="APPEXE" Source="../Debugger/Bin/Debug/Debugger.exe" Checksum="yes" KeyPath="yes"/>
+                <File Id="MUI" Source="../Debugger/Bin/Debug/FirstFloor.ModernUI.dll" Checksum="yes" />
+                <File Id="AVALON" Source="../Debugger/Bin/Debug/ICSharpCode.AvalonEdit.dll" Checksum="yes" />
+                <File Id="JSON" Source="../Debugger/Bin/Debug/Newtonsoft.Json.dll" Checksum="yes" />
+                <File Id="WS" Source="../Debugger/Bin/Debug/WebSocket4Net.dll" Checksum="yes" />
+            </Component>
+		</ComponentGroup>
+
+        <ComponentGroup Id="ToolsComponents" Directory="BINFOLDER">
+            <Component Id="TOOLS" Guid="5f3e3f7c-8b1d-4904-8bf1-9067b108ded2">
+                <File Id="COMPILER" Source="../Debugger/Bin/Debug/Bin/ScriptCompiler.exe" Checksum="yes" />
+                <File Id="TS" Source="../Debugger/Bin/Debug/Bin/ts.exe" Checksum="yes" />
+            </Component>
+        </ComponentGroup>
+	</Fragment>
+</Wix>

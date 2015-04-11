@@ -1,0 +1,15 @@
+﻿<mui:ModernDialog x:Class="Debugger.IDE.Dlg.CompErrDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Compile Errors" Height="300" Width="300">
+    <mui:ModernDialog.Resources>
+        <SolidColorBrush Color="Red" x:Key="Accent"/>
+        <SolidColorBrush Color="Red" x:Key="BorderBrush" />
+        <SolidColorBrush Color="Red" x:Key="WindowBorderActive" />
+        <SolidColorBrush Color="Red" x:Key="WindowBorderBackground" />
+    </mui:ModernDialog.Resources>
+    <Grid>
+        <TextBox Text="Compilation failed" />
+    </Grid>
+</mui:ModernDialog>

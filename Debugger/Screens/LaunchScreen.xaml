@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Debugger.Screens.LaunchScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Margin="20,0" MinWidth="160">
+                <Label Content="Projects"/>
+                <Separator />
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="btnNewProject" Content="New Project" Style="{StaticResource StyledButton}" Click="btnNewProject_Click"/>
+                    <!--<Button Name="btnOpenProject" Content="Open" Style="{StaticResource StyledButton}" Click="btnOpenProject_Click"/>-->
+                </StackPanel>
+                <Label Content="Recent" />
+                <StackPanel Name="recentFiles"/>
+            </StackPanel>
+            <StackPanel Margin="20,0">
+                <Label Content="Connect" />
+                <Separator />
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Address"/>
+                    <TextBox Name="txtAddr" MinWidth="160" Text="localhost:9002"/>
+                </StackPanel>
+                <Button Style="{StaticResource StyledButton}" Content="Connect" HorizontalAlignment="Center" Click="onConnect"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

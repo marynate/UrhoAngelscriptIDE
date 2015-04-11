@@ -1,0 +1,19 @@
+﻿<mui:ModernDialog x:Class="Debugger.IDE.Snippets.SnippetDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        Title="SnippetDlg" Height="300" Width="300">
+    <Grid>
+        <DockPanel>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
+                <Label Content="Snippet" Margin="5" />
+                <ComboBox Name="snippetCombo" ItemsSource="{Binding Snippets}" MinWidth="160"
+                          DisplayMemberPath="Name" SelectedValuePath="Name" SelectionChanged="snippetCombo_SelectionChanged">
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Name="snippetInputs">
+                
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</mui:ModernDialog>

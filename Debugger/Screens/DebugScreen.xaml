@@ -1,0 +1,221 @@
+﻿<UserControl 
+             xmlns:Editor="clr-namespace:Debugger.Editor"  
+             x:Class="Debugger.Screens.DebugScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:props="clr-namespace:Debugger.Controls"
+             xmlns:json="clr-namespace:Debugger.Json"
+             xmlns:me="clr-namespace:Debugger.Screens"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <BitmapImage x:Key="ContImage" UriSource="/Images/dark/appbar.control.play.png" />
+        <BitmapImage x:Key="SIImage" UriSource="/Images/dark/appbar.debug.step.into.png" />
+        <BitmapImage x:Key="SOutImage" UriSource="/Images/dark/appbar.debug.step.out.png" />
+        <BitmapImage x:Key="SOverImage" UriSource="/Images/dark/appbar.debug.step.over.png" />
+    </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="me:DebugScreen.ContCmd" />
+        <CommandBinding Command="me:DebugScreen.StepOverCmd" />
+        <CommandBinding Command="me:DebugScreen.StepInCmd" />
+        <CommandBinding Command="me:DebugScreen.StepOutCmd" />
+    </UserControl.CommandBindings>
+    <UserControl.InputBindings>
+        <KeyBinding Command="me:DebugScreen.ContCmd" Key="F5" />
+        <KeyBinding Command="me:DebugScreen.StepOverCmd" Key="F10" />
+        <KeyBinding Command="me:DebugScreen.StepInCmd" Key="F11" />
+        <KeyBinding Command="me:DebugScreen.StepOutCmd" Key="F11" Modifiers="Shift"/>
+    </UserControl.InputBindings>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+            <Button Name="btnCont" Style="{StaticResource StyledButton}" Padding="-5" Margin="2" Command="me:DebugScreen.ContCmd" ToolTip="Continue (F5)">
+                <Image MaxWidth="32" MaxHeight="32" Source="{StaticResource ContImage}"  ToolTip="Continue (F5)"/>
+            </Button>
+            <Button Name="btnStepOver" Style="{StaticResource StyledButton}"  Padding="-5" Margin="2" Command="me:DebugScreen.StepOverCmd" ToolTip="Step Over (F10)">
+                <Image MaxWidth="32" MaxHeight="32" Source="{StaticResource SOverImage}" />
+            </Button>
+            <Button Name="btnStepIn" Style="{StaticResource StyledButton}" Padding="-5" Margin="2" Command="me:DebugScreen.StepInCmd" ToolTip="Step In (F11)">
+                <Image MaxWidth="32" MaxHeight="32" Source="{StaticResource SIImage}" />
+            </Button>
+            <Button Name="btnStepOut" Style="{StaticResource StyledButton}" Padding="-5" Margin="2" Command="me:DebugScreen.StepOutCmd" ToolTip="Step Out (Shift+F11)">
+                <Image MaxWidth="32" MaxHeight="32" Source="{StaticResource SOutImage}" />
+            </Button>
+        </StackPanel>
+            
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="240"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="6"/>
+                <RowDefinition Height="240"/>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+        
+            <StackPanel Name="btnStack" Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="3" Background="#FFFBE385">
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsDebugging}"  Value="False">
+                                <Setter Property="Visibility"  Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsDebugging}"  Value="True">
+                                <Setter Property="Visibility"  Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <Button Style="{StaticResource StyledButton}" Content="Continue" Click="onContinue" />
+                <Button Style="{StaticResource StyledButton}" Content="Step Over" Click="onStepOver" />
+                <Button Style="{StaticResource StyledButton}" Content="Step In" Click="onStepIn" />
+                <Button Style="{StaticResource StyledButton}" Content="Step Out" Click="onStepOut" />
+            </StackPanel>
+        
+            <!-- editor in top left-->
+            <Editor:EditorTabs x:Name="editTabs" Grid.Column="0" Grid.Row="1"/>
+            <GridSplitter Width="6" Grid.Column="1" Grid.Row="1"/>
+            <TabControl Grid.Column="2" Grid.Row="1">
+                <TabControl.Items>
+                    <TabItem Header="Files">
+                        <Grid>
+                            <DataGrid Name="fileList" ItemsSource="{Binding Files}" CanUserAddRows="False" IsReadOnly="True" SelectionChanged="fileList_SelectionChanged" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding SectionName}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Local Vars">
+                        <Grid>
+                            <props:JWrapView x:Name="localsTree" />
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="$this">
+                        <Grid>
+                            <props:JWrapView x:Name="thisTree" />
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Globals">
+                        <props:JWrapView x:Name="globalsTree" />
+                    </TabItem>
+                </TabControl.Items>
+            </TabControl>
+
+            <GridSplitter Height="6" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"/>
+        
+            <Grid Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="6"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+            
+                <TabControl Grid.Column="0">
+                    <TabItem Header="Watch">
+                        <Grid>
+                            <DataGrid Name="watchGrid" ItemsSource="{Binding Watches}">
+                                
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Log">
+                        <Grid>
+                            <DataGrid Name="logGrid" ItemsSource="{Binding Log}" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False">
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding MsgType}" Value="Error">
+                                                <Setter Property="Background" Value="Red" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding MsgType}" Value="Warning">
+                                                <Setter Property="Background" Value="Orange" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding MsgType}" Value="Data">
+                                                <Setter Property="Background" Value="Green" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.RowStyle>
+                                <DataGrid.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding MsgType}" Value="Error">
+                                                <Setter Property="Foreground" Value="White" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding MsgType}" Value="Warning">
+                                                <Setter Property="Foreground" Value="Black" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding MsgType}" Value="Data">
+                                                <Setter Property="Foreground" Value="White" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.CellStyle>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+                <GridSplitter Grid.Column="1"/>
+                <TabControl Grid.Column="2">
+                    <TabItem Header="Breakpoints">
+                        <Grid>
+                            <DataGrid Name="breakGrid" ItemsSource="{Binding AllBreakpoints}" CanUserAddRows="False" AutoGenerateColumns="False" PreviewKeyDown="breakGrid_PreviewKeyDown">
+                                <DataGrid.Columns>
+                                    <DataGridCheckBoxColumn Header="Active" Binding="{Binding Active}" />
+                                    <DataGridTextColumn Header="Line" Binding="{Binding LineNumber}" IsReadOnly="True" />
+                                    <DataGridTextColumn Header="File" Binding="{Binding File}" IsReadOnly="True" />
+                                </DataGrid.Columns>
+                                <DataGrid.Resources>
+                                    <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                                        <EventSetter Event="MouseDoubleClick" Handler="bpDoubleClick"/>
+                                    </Style>
+                                </DataGrid.Resources>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Callstack">
+                        <DataGrid Name="stackGrid" ItemsSource="{Binding CallStack}" CanUserAddRows="False" IsReadOnly="True">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                                    <EventSetter Event="MouseDoubleClick" Handler="stackDoubleClick"/>
+                                </Style>
+                            </DataGrid.Resources>
+                        </DataGrid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+    
+            <DockPanel Name="stackReconnect" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="4" Background="#FF511515">
+                <DockPanel.Style>
+                    <Style TargetType="{x:Type DockPanel}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DockPanel.Style>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="5">
+                    <TextBlock Text="Url" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <TextBox Name="txtConnection" Text="{Binding Connection}" HorizontalAlignment="Right" Margin="5" MinWidth="160"/>
+                    <Button Style="{StaticResource StyledButton}" HorizontalAlignment="Right" Content="Reconnect" Click="onReconnect" Margin="5"/>
+                </StackPanel>
+                <TextBlock Text="Disconnected from server..." VerticalAlignment="Center" FontSize="16" Margin="10" FontWeight="Bold"/>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</UserControl>

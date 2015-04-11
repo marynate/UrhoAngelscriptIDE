@@ -1,0 +1,33 @@
+﻿<mui:ModernDialog x:Class="Debugger.IDE.IDESettingsDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Develop Settings" Height="300" Width="300">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Run Exe" VerticalAlignment="Center" Margin="5" MinWidth="85"/>
+                <TextBox Name="txtRunExe" MinWidth="160" Text="{Binding RunExe}" Margin="5"/>
+                <Button Content="Browse" Tag="run" Click="Button_Click" Style="{StaticResource StyledButton}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Run Params" VerticalAlignment="Center" Margin="5" MinWidth="85" />
+                <TextBox Name="txtRunParams" MinWidth="160" Text="{Binding RunParams}" Margin="5"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Debug Exe" VerticalAlignment="Center" Margin="5" MinWidth="85"/>
+                <TextBox Name="txtDebugExe" MinWidth="160" Text="{Binding DebugExe}" Margin="5"/>
+                <Button Content="Browse" Tag="debug" Click="Button_Click" Style="{StaticResource StyledButton}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Debug Params" VerticalAlignment="Center" Margin="5" MinWidth="85" />
+                <TextBox Name="txtDebugParams" MinWidth="160" Text="{Binding DebugParams}" Margin="5"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Compile File" VerticalAlignment="Center" Margin="5" MinWidth="85"/>
+                <TextBox Name="txtCompileFile" MinWidth="160" Text="{Binding CompilerPath}" Margin="5"/>
+                <Button Content="Browse" Tag="compile" Click="Button_Click" Style="{StaticResource StyledButton}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</mui:ModernDialog>

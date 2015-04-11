@@ -1,0 +1,464 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B4E322B1-0AB2-4F7D-985A-DE9FD47949DF}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Debugger</RootNamespace>
+    <AssemblyName>Debugger</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <ExpressionBlendVersion>5.0.40218.0</ExpressionBlendVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.AvalonEdit">
+      <HintPath>..\packages\AvalonEdit.5.0.2\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WebSocket4Net">
+      <HintPath>..\packages\WebSocket4Net.0.11\lib\net45\WebSocket4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.AvalonDock">
+      <HintPath>..\packages\AvalonDock.2.0.2000\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero">
+      <HintPath>..\packages\AvalonDock.2.0.2000\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Expression">
+      <HintPath>..\packages\AvalonDock.2.0.2000\lib\net40\Xceed.Wpf.AvalonDock.Themes.Expression.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro">
+      <HintPath>..\packages\AvalonDock.2.0.2000\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010">
+      <HintPath>..\packages\AvalonDock.2.0.2000\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="AvalonExtensions.cs" />
+    <Compile Include="BaseClass.cs" />
+    <Compile Include="Controls\AltDocViewer.xaml.cs">
+      <DependentUpon>AltDocViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DocViewer.xaml.cs">
+      <DependentUpon>DocViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\IDocMenuBuilder.cs" />
+    <Compile Include="Controls\JWrapView.xaml.cs">
+      <DependentUpon>JWrapView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConfirmDlg.xaml.cs">
+      <DependentUpon>ConfirmDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Design\DesignModel.cs" />
+    <Compile Include="Design\DesignScreen.xaml.cs">
+      <DependentUpon>DesignScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Design\TileChunkList.xaml.cs">
+      <DependentUpon>TileChunkList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Design\TilePalette.xaml.cs">
+      <DependentUpon>TilePalette.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dlg\ErrorDlg.xaml.cs">
+      <DependentUpon>ErrorDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dlg\InputDlg.xaml.cs">
+      <DependentUpon>InputDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dlg\SettingsDlg.xaml.cs">
+      <DependentUpon>SettingsDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingUtility.cs" />
+    <Compile Include="Editor\BraceHighlighter.cs" />
+    <Compile Include="Editor\BreakpointMargin.cs" />
+    <Compile Include="Editor\EditorTabs.xaml.cs">
+      <DependentUpon>EditorTabs.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\FindPanel.cs" />
+    <Compile Include="Editor\LineHighlighter.cs" />
+    <Compile Include="Editor\SearchResultBackgroundRenderer.cs" />
+    <Compile Include="ErrorHandler.cs" />
+    <Compile Include="FileBullshit.cs" />
+    <Compile Include="IDE\Activity\APIDocWatcher.cs" />
+    <Compile Include="IDE\Activity\CompilerActivity.cs" />
+    <Compile Include="IDE\Activity\IDBBuilderActivity.cs" />
+    <Compile Include="IDE\Activity\IntellisenseActivity.cs" />
+    <Compile Include="IDE\Activity\SearchActivity.cs" />
+    <Compile Include="IDE\API\APIDocumentation.cs" />
+    <Compile Include="IDE\ClassDiagram.cs" />
+    <Compile Include="IDE\Dlg\CompErrDlg.xaml.cs">
+      <DependentUpon>CompErrDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IDE\Dlg\CompSuccessDlg.xaml.cs">
+      <DependentUpon>CompSuccessDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IDE\Dlg\NewFileDlg.xaml.cs">
+      <DependentUpon>NewFileDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IDE\ErrorLineHighlighter.cs" />
+    <Compile Include="IDE\FileModel.cs" />
+    <Compile Include="IDE\IDEDashboard.xaml.cs">
+      <DependentUpon>IDEDashboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IDE\IDEEditor.xaml.cs">
+      <DependentUpon>IDEEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IDE\IDEModel.cs" />
+    <Compile Include="IDE\IDEResources.xaml.cs">
+      <DependentUpon>IDEResources.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IDE\IDESettings.cs" />
+    <Compile Include="IDE\IDESettingsDlg.xaml.cs">
+      <DependentUpon>IDESettingsDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IDE\IDETabs.xaml.cs">
+      <DependentUpon>IDETabs.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IDE\IDEView.xaml.cs">
+      <DependentUpon>IDEView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IDE\Intellisense\ASParser.cs" />
+    <Compile Include="IDE\Intellisense\CompletionData.cs" />
+    <Compile Include="IDE\Intellisense\DepthScanner.cs" />
+    <Compile Include="IDE\Intellisense\IntellisenseHelper.cs" />
+    <Compile Include="IDE\Intellisense\IStatementResolver.cs" />
+    <Compile Include="IDE\Intellisense\NameResolver.cs" />
+    <Compile Include="IDE\Intellisense\OverloadProvider.cs" />
+    <Compile Include="IDE\Intellisense\StatementResolution\FunctionResolver.cs" />
+    <Compile Include="IDE\Intellisense\StatementResolution\IndexerResolver.cs" />
+    <Compile Include="IDE\Intellisense\StatementResolution\MemberResolver.cs" />
+    <Compile Include="IDE\Snippets\CodeSnippet.cs" />
+    <Compile Include="IDE\Snippets\SnippetDlg.xaml.cs">
+      <DependentUpon>SnippetDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Json\JsonLoader.cs" />
+    <Compile Include="Json\JWrapper.cs" />
+    <Compile Include="KeyBullshit.cs" />
+    <Compile Include="Debugger\CodeValue.cs" />
+    <Compile Include="Debugger\FileData.cs" />
+    <Compile Include="Debugger\LogMessage.cs" />
+    <Compile Include="Debugger\Module.cs" />
+    <Compile Include="Debugger\SessionData.cs" />
+    <Compile Include="Debugger\WatchValue.cs" />
+    <Compile Include="Net\DebugClient.cs" />
+    <Compile Include="NewProjectDlg.xaml.cs">
+      <DependentUpon>NewProjectDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RenameDlg.xaml.cs">
+      <DependentUpon>RenameDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\DebugScreen.xaml.cs">
+      <DependentUpon>DebugScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\LaunchScreen.xaml.cs">
+      <DependentUpon>LaunchScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsDlg.xaml.cs">
+      <DependentUpon>SettingsDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StringUtils.cs" />
+    <Compile Include="StyledButton.cs" />
+    <Compile Include="UserData.cs" />
+    <Page Include="Controls\AltDocViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DocViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\JWrapView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ConfirmDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Design\DesignScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Design\TileChunkList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Design\TilePalette.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dlg\ErrorDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dlg\InputDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dlg\SettingsDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\CodeEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\EditorTabs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IDE\Dlg\CompErrDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IDE\Dlg\CompSuccessDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IDE\Dlg\NewFileDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IDE\IDEDashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IDE\IDEEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IDE\IDEResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IDE\IDESettingsDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IDE\IDETabs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IDE\IDEView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IDE\Snippets\SnippetDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Editor\CodeEditor.xaml.cs">
+      <DependentUpon>CodeEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="NewProjectDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RenameDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\DebugScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\LaunchScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TabControlStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TabStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WinStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Debugger\Breakpoint.cs" />
+    <Compile Include="Debugger\Callstack.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <EmbeddedResource Include="Resources\Angelscript.xshd" />
+    <EmbeddedResource Include="Resources\XML.xshd" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\FirstFloor.ModernUI\FirstFloor.ModernUI\FirstFloor.ModernUI.csproj">
+      <Project>{9a653a28-fe46-40e8-a14f-48b0e325165d}</Project>
+      <Name>FirstFloor.ModernUI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IDE\Model\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="next.png" />
+    <EmbeddedResource Include="prev.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\folder.png" />
+    <Resource Include="Images\folder_full.png" />
+    <Resource Include="Images\image.png" />
+    <Resource Include="Images\music.png" />
+    <Resource Include="Images\text.png" />
+    <Resource Include="Images\xml32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\codefile.png" />
+    <Resource Include="Images\continue.png" />
+    <Resource Include="Images\package.png" />
+    <Resource Include="Images\run.png" />
+    <Resource Include="Images\save.png" />
+    <Resource Include="Images\saveall.png" />
+    <Resource Include="Images\startdebug.png" />
+    <Resource Include="Images\stepin.png" />
+    <Resource Include="Images\stepout.png" />
+    <Resource Include="Images\stepover.png" />
+    <Resource Include="Images\stop.png" />
+    <Resource Include="Images\textfile.png" />
+    <Resource Include="Images\treefile.png" />
+    <Resource Include="Images\xmlfile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\light\appbar.alert.png" />
+    <Resource Include="Images\light\appbar.browser.png" />
+    <Resource Include="Images\light\appbar.bug.png" />
+    <Resource Include="Images\light\appbar.control.play.png" />
+    <Resource Include="Images\light\appbar.controller.snes.png" />
+    <Resource Include="Images\light\appbar.debug.step.into.png" />
+    <Resource Include="Images\light\appbar.debug.step.out.png" />
+    <Resource Include="Images\light\appbar.debug.step.over.png" />
+    <Resource Include="Images\light\appbar.page.new.png" />
+    <Resource Include="Images\light\appbar.resource.png" />
+    <Resource Include="Images\light\appbar.tools.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\all\enum.png" />
+    <Resource Include="Images\all\interface.png" />
+    <Resource Include="Images\all\method.png" />
+    <Resource Include="Images\all\property.png" />
+    <Resource Include="Images\all\roproperty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\all\class.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\all\error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dark\appbar.alert.png" />
+    <Resource Include="Images\dark\appbar.bug.png" />
+    <Resource Include="Images\dark\appbar.control.play.png" />
+    <Resource Include="Images\dark\appbar.controller.snes.png" />
+    <Resource Include="Images\dark\appbar.debug.step.into.png" />
+    <Resource Include="Images\dark\appbar.debug.step.out.png" />
+    <Resource Include="Images\dark\appbar.debug.step.over.png" />
+    <Resource Include="Images\dark\appbar.page.new.png" />
+    <Resource Include="Images\dark\appbar.resource.png" />
+    <Resource Include="Images\dark\appbar.tools.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dark\appbar.save.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

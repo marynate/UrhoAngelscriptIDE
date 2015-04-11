@@ -1,0 +1,142 @@
+﻿<?xml version="1.0"?>
+<!-- syntaxdefinition for C/C++ 2001 by Andrea Paatz and Mike Krueger -->
+<!-- converted to AvalonEdit format by Siegfried Pammer in 2010 -->
+<SyntaxDefinition name="Angelscript" extensions=".as" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+    <Color name="Comment" foreground="#FF7F9F7F" fontStyle="italic"/>
+    <Color name="Character" foreground="#FFDCA3A3" fontWeight="bold" />
+    <Color name="String" foreground="#FFCC9393" />
+    <Color name="Preprocessor" foreground="#FFFFCFAF" />
+    <Color name="Punctuation" foreground="#FF9F9D6D" />
+    <Color name="MethodName" foreground="#FFEFDCBC" fontWeight="bold" />
+    <Color name="Digits" foreground="#FFC0BED1" />
+    <Color name="CompoundKeywords" foreground="#FFCEDF99" fontWeight="bold" />
+    <Color name="This" foreground="#FFFFCFAF" fontWeight="bold" />
+    <Color name="Operators" foreground="#FFDCA3A3" fontWeight="bold" />
+    <Color name="Namespace" foreground="#FF80D4AA" fontWeight="bold" />
+    <Color name="Friend" foreground="#FFA52A2A" />
+    <Color name="Modifiers" foreground="#FF80D4AA" fontWeight="bold" />
+    <Color name="TypeKeywords" foreground="#FFEFEFAF" />
+    <Color name="BooleanConstants" foreground="#FFDCA3A3" fontWeight="bold" />
+    <Color name="Keywords" foreground="#FFCEDF99" fontWeight="bold" />
+    <Color name="LoopKeywords" foreground="#FFCEDF99" fontWeight="bold" />
+    <Color name="JumpKeywords" foreground="#FFCEDF99" />
+    <Color name="ExceptionHandling" foreground="#FFFFCFAF" fontWeight="bold" />
+    <Color name="ControlFlow" foreground="#FFEFDCBC" fontWeight="bold" />
+    <RuleSet ignoreCase="false">
+        <Rule color="String">
+            [?,.;()\[\]{}+\-/%*&lt;&gt;^=~!&amp;]+
+        </Rule>
+        <Rule color="Keywords">
+            \w*@
+        </Rule>
+        <Keywords color="CompoundKeywords">
+            <Word>interface</Word>
+            <Word>abstract</Word>
+            <Word>shared</Word>
+            <Word>override</Word>
+            <Word>final</Word>
+            <Word>where</Word>
+            <Word>finally</Word>
+            <Word>null</Word>
+        </Keywords>
+        <Keywords color="This">
+            <Word>this</Word>
+        </Keywords>
+        <Keywords color="Operators">
+            <Word>new</Word>
+        </Keywords>
+        <Keywords color="Namespace">
+            <Word>using</Word>
+            <Word>namespace</Word>
+            <Word>import</Word>
+            <Word>from</Word>
+        </Keywords>
+        <Keywords color="Friend">
+            <Word>friend</Word>
+        </Keywords>
+        <Keywords color="Modifiers">
+            <Word>private</Word>
+            <Word>protected</Word>
+            <Word>public</Word>
+            <Word>const</Word>
+            <Word>static</Word>
+        </Keywords>
+        <Keywords color="Keywords">
+            <Word>bool</Word>
+            <Word>float</Word>
+            <Word>uint8</Word>
+            <Word>uint16</Word>
+            <Word>uint</Word>
+            <Word>uint64</Word>
+            <Word>int8</Word>
+            <Word>int16</Word>
+            <Word>int</Word>
+            <Word>int64</Word>
+            <Word>void</Word>
+            <Word>class</Word>
+            <Word>enum</Word>
+        </Keywords>
+        <Keywords color="Keywords">
+            <Word>false</Word>
+            <Word>true</Word>
+        </Keywords>
+        <Keywords color="This">
+            <Word>do</Word>
+            <Word>for</Word>
+            <Word>while</Word>
+        </Keywords>
+        <Keywords color="This">
+            <Word>break</Word>
+            <Word>continue</Word>
+            <Word>goto</Word>
+            <Word>return</Word>
+        </Keywords>
+        <Keywords color="ExceptionHandling">
+            <Word>catch</Word>
+            <Word>throw</Word>
+            <Word>try</Word>
+        </Keywords>
+        <Keywords color="This">
+            <Word>case</Word>
+            <Word>else</Word>
+            <Word>if</Word>
+            <Word>switch</Word>
+            <Word>default</Word>
+        </Keywords>
+        <Keywords color="Namespace">
+            <Word>explicit</Word>
+            <Word>export</Word>
+            <Word>operator</Word>
+            <Word>Virtual</Word>
+            <Word>cast</Word>
+            <Word>template</Word>
+            <Word>funcdef</Word>
+        </Keywords>
+        <Span color="Preprocessor">
+            <Begin>\#</Begin>
+        </Span>
+        <Span color="Comment">
+            <Begin>//</Begin>
+        </Span>
+        <Span color="Comment" multiline="true">
+            <Begin>/\*</Begin>
+            <End>\*/</End>
+        </Span>
+        <Span color="String">
+            <Begin>"</Begin>
+            <End>"</End>
+            <RuleSet>
+                <Span begin="\\" end="." />
+            </RuleSet>
+        </Span>
+        <Span color="Character">
+            <Begin>'</Begin>
+            <End>'</End>
+            <RuleSet>
+                <Span begin="\\" end="." />
+            </RuleSet>
+        </Span>
+        <Rule color="MethodName">[\d\w_]+(?=(\s*\())</Rule>
+        <Rule color="Digits">\b0[xX][0-9a-fA-F]+|(\b\d+(\.[0-9]+)?|\.[0-9]+)([eE][+-]?[0-9]+)?</Rule>
+    </RuleSet>
+</SyntaxDefinition>

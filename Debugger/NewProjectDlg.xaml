@@ -1,0 +1,19 @@
+﻿<mui:ModernDialog x:Class="Debugger.NewProjectDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        Title="NewProjectDlg" Height="300" Width="300">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Project Name" VerticalAlignment="Center" Margin="5" MinWidth="80"/>
+                <TextBox MinWidth="160" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Root Dir" VerticalAlignment="Center" Margin="5" MinWidth="80"/>
+                <TextBox Name="txtRootDir" MinWidth="160" />
+                <Button Name="btnBrowseRoot" Content="Browse..."/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</mui:ModernDialog>

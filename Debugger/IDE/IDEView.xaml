@@ -1,0 +1,266 @@
+﻿<UserControl xmlns:Controls="clr-namespace:Debugger.Controls"  
+             xmlns:IDE="clr-namespace:Debugger.IDE"  
+            xmlns:API="clr-namespace:Debugger.IDE.API"  
+             x:Class="Debugger.IDE.IDEView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            x:Name="ideFrame"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <!-- File tree -->
+        <BitmapImage x:Key="FolderImage" UriSource="/Images/folder.png" />
+        <BitmapImage x:Key="FolderFullImage" UriSource="/Images/folder_full.png" />
+        <BitmapImage x:Key="FileImage" UriSource="/Images/text.png" />
+        <!-- Toolbar -->
+        <BitmapImage x:Key="SaveImage" UriSource="/Images/dark/appbar.save.png" />
+        <BitmapImage x:Key="SaveAllImage" UriSource="/Images/saveall.png" />
+        <BitmapImage x:Key="PackImage" UriSource="/Images/dark/appbar.resource.png" />
+        <BitmapImage x:Key="StartImage" UriSource="/Images/dark/appbar.control.play.png" />
+        <BitmapImage x:Key="DebugImage" UriSource="/Images/dark/appbar.bug.png" />
+        <BitmapImage x:Key="SettingsImage" UriSource="/Images/dark/appbar.tools.png" />
+    </UserControl.Resources>
+
+    <Grid MaxWidth="{Binding ActualWidth, ElementName=ideFrame, Mode=OneWay}" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Toolbar -->
+        <StackPanel Grid.Column="0">
+            <Button Name="btnSave" Style="{StaticResource StyledButton}" Padding="-5" Margin="2" Click="btnSave_Click">
+                <Image MaxWidth="32" MaxHeight="32" Source="{StaticResource SaveImage}" />
+            </Button>
+            <Separator />
+            <Button Name="btnCompile" Style="{StaticResource StyledButton}" Padding="-5" Margin="2" Click="btnCompile_Click">
+                <Image MaxWidth="32" MaxHeight="32" Source="{StaticResource PackImage}" />
+            </Button>
+            <Button Name="btnRun" Style="{StaticResource StyledButton}" Padding="-5" Margin="2" Click="btnRun_Click">
+                <Image MaxWidth="32" MaxHeight="32" Source="{StaticResource StartImage}" />
+            </Button>
+            <Button Name="btnDebug" Style="{StaticResource StyledButton}" Padding="-5" Margin="2" Click="btnDebug_Click">
+                <Image MaxWidth="32" MaxHeight="32" Source="{StaticResource DebugImage}" />
+            </Button>
+            <Separator />
+            <Button Name="btnSettings" Style="{StaticResource StyledButton}" Padding="-5" Margin="2" Click="btnSettings_Click">
+                <Image MaxWidth="32" MaxHeight="32" Source="{StaticResource SettingsImage}" />
+            </Button>
+        </StackPanel>
+
+        <!-- BEGIN ACTUAL IDE -->
+        <!-- BEGIN ACTUAL IDE -->
+        <!-- BEGIN ACTUAL IDE -->
+        <!-- BEGIN ACTUAL IDE -->
+        <Grid MaxWidth="{Binding ActualWidth, ElementName=ideFrame, Mode=OneWay}" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="6"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="6" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="6" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- File List -->
+            <Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="3">
+                <TabControl>
+                    <TabItem Header="Files">
+                        <TreeView Name="fileTree" ItemsSource="{Binding Children}">
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="{x:Type TreeViewItem}">
+                                    <EventSetter Event="MouseDoubleClick" Handler="fileTree_MouseDoubleClick" />
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                            <TreeView.Resources>
+                                <HierarchicalDataTemplate DataType="{x:Type IDE:Folder}" ItemsSource="{Binding Children}">
+                                    <StackPanel Orientation="Horizontal" Tag="{Binding}">
+                                        <StackPanel.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="New Folder" Click="onNewFolder" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                                                <MenuItem Header="New File" Click="onNewFile" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                                                <MenuItem Header="Rename" Click="onRenameFolder" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                                                <Separator />
+                                                <MenuItem Header="Delete" Click="onDeleteFile" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                                            </ContextMenu>
+                                        </StackPanel.ContextMenu>
+                                        <Image MaxWidth="24" MaxHeight="24" DataContext="{Binding}">
+                                            <Image.Style>
+                                                <Style TargetType="{x:Type Image}">
+                                                    <Setter Property="Source" Value="{StaticResource FolderFullImage}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Children.Count}" Value="0">
+                                                            <Setter Property="Source" Value="{StaticResource FolderImage}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+                                        <TextBlock Text="{Binding Path=Name}" Foreground="{DynamicResource ButtonText}"/>
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                                <DataTemplate DataType="{x:Type IDE:FileLeafItem}" >
+                                    <StackPanel Orientation="Horizontal" Tag="{Binding}">
+                                        <StackPanel.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Edit" Click="onEditFile" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                                                <MenuItem Header="Rename" Click="onRenameFile" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                                                <Separator />
+                                                <MenuItem Header="Delete" Click="onDeleteFile" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                                            </ContextMenu>
+                                        </StackPanel.ContextMenu>
+                                        <Image MaxWidth="24" MaxHeight="24" Source="{StaticResource FileImage}" />
+                                        <TextBlock Text="{Binding Path=Name}"  Foreground="{DynamicResource ButtonText}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </TreeView.Resources>
+                        </TreeView>
+                    </TabItem>
+                    <TabItem Header="Classes">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                                <Label Content="Search" Margin="5,0" VerticalAlignment="Center" />
+                                <TextBox Name="txtSearchClasses" MinWidth="160" PreviewKeyDown="txtSearchClasses_PreviewKeyDown" GotFocus="txtSearchClasses_GotFocus" />
+                            </StackPanel>
+                            <TreeView Name="objectTree" ItemsSource="{Binding GlobalTypes.TypeInfo}">
+                                <TreeView.Resources>
+                                    <HierarchicalDataTemplate DataType="{x:Type IDE:EnumInfo}" ItemsSource="{Binding Values}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="/Images/all/enum.png" />
+                                            <TextBlock Text="enum "/>
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </HierarchicalDataTemplate>
+                                    <HierarchicalDataTemplate DataType="{x:Type IDE:TypeInfo}" ItemsSource="{Binding PropertyUI}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="/Images/all/class.png" />
+                                            <TextBlock Text="{Binding Description}"/>
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </HierarchicalDataTemplate>
+                                    <DataTemplate DataType="{x:Type IDE:PropInfo}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{Binding ImgSource}" />
+                                            <!--<Image Source="/Images/all/property.png" />-->
+                                            <TextBlock Text="{Binding Name}" Margin="2,0"/>
+                                            <TextBlock Text=":" Margin="0" />
+                                            <TextBlock Text="{Binding Type.Name}" Margin="5,0" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type IDE:FunctionInfo}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="/Images/all/method.png" />
+                                            <TextBlock Text="{Binding ReturnType.Name}" Margin="5,2" />
+                                            <TextBlock Text="{Binding Name}" Margin="2"/>
+                                            <TextBlock Text="{Binding Inner}" Margin="2"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </TreeView.Resources>
+                            </TreeView>
+                        </DockPanel>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+
+            <GridSplitter Width="6" Grid.Column="1" Grid.RowSpan="3" />
+
+            <!-- Editor Tabs -->
+            <Grid Grid.Column="2" Grid.Row="0">
+                <IDE:IDETabs x:Name="ideTabs" />
+            </Grid>
+
+            <GridSplitter Width="6" Grid.Column="3" Grid.Row="0" Grid.RowSpan="2"/>
+            
+            <Grid Grid.Column="4" Grid.Row="0">
+                <TabControl>
+                    <TabItem Header="Events">
+                        <Grid>
+                            <Controls:AltDocViewer x:Name="eventsDoc" />
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Attributes">
+                        <Grid>
+                            <Controls:AltDocViewer x:Name="attrDoc"/>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Script API">
+                        <Grid>
+                            <Controls:AltDocViewer x:Name="scriptDoc"/>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+            
+            <GridSplitter Height="6" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="3"/>
+
+            <Grid Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3">
+                <TabControl Name="logTabs">
+                    <TabItem Header="Output">
+                        <TextBox Name="txtConsole" IsReadOnly="True" Text="{Binding CompilerOutput}"/>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Name="stackErrorHeader">
+                                <Image Source="/Images/all/error.png"> <!-- show red-X image when there's errors -->
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CompileErrors.Count}" Value="0">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                                <TextBlock x:Name="errorTabCount" Text="{Binding CompileErrors.Count}" Margin="4,0,4,0" Foreground="{DynamicResource ButtonText}"/>
+                                <TextBlock Text="Errors" Foreground="{DynamicResource ButtonText}"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <DataGrid Name="gridErrors" ItemsSource="{Binding CompileErrors}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Line" Binding="{Binding Line}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Error Info" Binding="{Binding Message}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="File" Binding="{Binding File}" IsReadOnly="True" />
+                            </DataGrid.Columns>
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                                    <EventSetter Event="MouseDoubleClick" Handler="errorDoubleClick"/>
+                                </Style>
+                            </DataGrid.Resources>
+                        </DataGrid>
+                    </TabItem>
+                    <TabItem Header="Search">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0">
+                                <Label Content="Search" VerticalAlignment="Center" Margin="5"/>
+                                <TextBox Name="txtSearchString" MinWidth="160" PreviewKeyDown="txtSearchString_PreviewKeyDown"/>
+                                <CheckBox Name="chkSearchExplicit" Content="Explicit" Margin="5" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <DataGrid Name="gridSearch" Grid.Row="1" ItemsSource="{Binding SearchResults}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="True">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Results" Binding="{Binding Text}" />
+                                </DataGrid.Columns>
+                                <DataGrid.Resources>
+                                    <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                                        <EventSetter Event="MouseDoubleClick" Handler="searchDoubleClick"/>
+                                    </Style>
+                                </DataGrid.Resources>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
