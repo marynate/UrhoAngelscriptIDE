@@ -1,12 +1,16 @@
 # UrhoAngelscriptIDE
 An IDE and Debugger for Angelscript with Urho3D.
 
-## Critical Todo's That May Interfere with usages
+## NuGet dependencies
+
+Newtonsoft Josn.NET, WebSocket4Net, and AvalonEdit
+
+FirstFloor.ModernUI included (slightly tweaked)
+
+### Critical Todo's That May Interfere with usages
 
 * Code editors for the IDE/Debug views need to be consolidated
 * Saving remote files (received from debug server) locally, in the case of debugging the local machine, this is unnecessary as the saving will send the file data over the connection where the debug daemon will save it
-* Function parameters for intellisense
-* Comments/notes on intellisense related items (ie class/function documentation)
 
 # IDE Functionality
 The IDE is focused on directories instead of projects/solutions. Select the root directory of your project (in the case of Urho this may be.
