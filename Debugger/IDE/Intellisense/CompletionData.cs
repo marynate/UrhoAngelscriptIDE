@@ -8,6 +8,9 @@ using System.Windows.Media.Imaging;
 
 namespace Debugger.IDE.Intellisense {
 
+    // Classes used by AvalonEdit's completion dialog
+    // They concern themselves with the snippet to insert and with the presentation (icons)
+
     public class BaseCompletionData : ICompletionData {
         protected string text_;
         protected string desc_;

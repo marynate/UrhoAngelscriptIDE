@@ -14,15 +14,49 @@ namespace Debugger.IDE.Snippets {
         public string Key { get { return key_; } set { key_ = value; OnPropertyChanged("Key"); } }
     }
 
+    public class CodeSnippetOption : CodeSnippetInput
+    {
+    }
+
+    public class CodeBlock
+    {
+        public string Code { get; set; }
+        public string[] Requires { get; set; }
+    }
+
     public class CodeSnippet : NamedBaseClass {
-        string code_;
+        ObservableCollection<CodeBlock> code_ = new ObservableCollection<CodeBlock>();
 
         public CodeSnippet() {
             Inputs = new ObservableCollection<CodeSnippetInput>();
         }
 
         public string CreateCode(Dictionary<string, string> aValues) {
-            string ret = code_;
+            string ret = "";
+            foreach (CodeBlock cb in Code)
+            {
+                bool passes = true;
+                if (cb.Requires != null)
+                {
+                    // Scan required settings, required settings are displayed as checkboxes
+                    foreach (string req in cb.Requires)
+                    {
+                        if (aValues.ContainsKey(req) && aValues[req].Equals("true"))
+                            continue;
+                        else
+                        {
+                            passes = false;
+                            break;
+                        }
+                    }
+                }
+                if (passes)
+                {
+                    if (ret.Length > 0)
+                        ret += "\r\n";
+                    ret += cb.Code;
+                }
+            }
             foreach (CodeSnippetInput input in Inputs) {
                 if (aValues.ContainsKey(input.Name)) {
                     ret = ret.Replace("{{" + input.Key + "}}", aValues[input.Name]);
@@ -32,7 +66,7 @@ namespace Debugger.IDE.Snippets {
         }
 
         public ObservableCollection<CodeSnippetInput> Inputs { get; set; }
-        public string Code { get { return code_; } set { code_ = value; OnPropertyChanged("Code"); } }
+        public ObservableCollection<CodeBlock> Code { get { return code_; } }
         public string Extension { get; set; }
 
         public static CodeSnippet FromFile(string aFile) {
@@ -41,6 +75,13 @@ namespace Debugger.IDE.Snippets {
             CodeSnippet ret = new CodeSnippet();
             ret.Name = doc.DocumentElement.GetAttribute("name");
             ret.Extension = doc.DocumentElement.GetAttribute("extension");
+
+            foreach (XmlElement elem in doc.DocumentElement.GetElementsByTagName("option"))
+            {
+                CodeSnippetOption opt = new CodeSnippetOption { Name = elem.GetAttribute("name"), Key = elem.GetAttribute("key") };
+                ret.Inputs.Add(opt);
+            }
+
             foreach (XmlElement elem in doc.DocumentElement.GetElementsByTagName("input")) {
                 CodeSnippetInput input = new CodeSnippetInput();
                 input.Name = elem.GetAttribute("name");
@@ -48,7 +89,13 @@ namespace Debugger.IDE.Snippets {
                 ret.Inputs.Add(input);
             }
             foreach (XmlElement elem in doc.DocumentElement.GetElementsByTagName("code")) {
-                ret.Code = elem.InnerText;
+                string requires = elem.GetAttribute("requires");
+                if (requires != null && requires.Length > 0)
+                {
+                    ret.Code.Add(new CodeBlock { Code = elem.InnerText, Requires = requires.Split(' ') });
+                }
+                else
+                    ret.Code.Add(new CodeBlock { Code = elem.InnerText, Requires = null });
             }
             return ret;
         }

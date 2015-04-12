@@ -25,11 +25,19 @@ namespace Debugger.IDE.Activity {
             Thread thread = new Thread(delegate() {
                 Globals globs = new Globals();
                 ASParser parser = new ASParser();
-                StringReader rdr = new StringReader(File.ReadAllText(file));
-                parser.ParseDumpFile(rdr, globs);
-                MainWindow.inst().Dispatcher.Invoke(delegate() {
-                    IDEProject.inst().GlobalTypes = globs;
-                });
+                try
+                {
+                    StringReader rdr = new StringReader(File.ReadAllText(file));
+                    parser.ParseDumpFile(rdr, globs);
+                    MainWindow.inst().Dispatcher.Invoke(delegate()
+                    {
+                        IDEProject.inst().GlobalTypes = globs;
+                    });
+                } 
+                catch (Exception ex)
+                {
+                    // swallow all exceptions
+                }
             });
             thread.Start();
 

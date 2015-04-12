@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 using System.Windows.Documents;
 
 namespace Debugger.IDE.Intellisense {
+
+    // Utility functions for making assessments of the current text state in AvalonEdit
+
     public static class IntellisenseHelper {
+        
         //is the current caret to the right of specific character, = or . typically
         public static bool OnRightSideOf(char aCharCode, TextDocument doc, int offset, int line) {
             int StartLine = doc.Lines[line-1].Offset;

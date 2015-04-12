@@ -28,29 +28,6 @@ namespace Debugger.IDE.Intellisense {
                         int startidx = lineCode.IndexOf(text);
                         if (!suggestions.Contains(lineCode))
                             suggestions.Add(lineCode);
-                        //unroll to the start of the word
-                        //for (; startidx > 0; --startidx) {
-                        //    if (BREAKCHARS.Contains(lineCode[startidx])) {
-                        //        ++startidx; //move forward 1
-                        //        break;
-                        //    }
-                        //}
-                        //int endidx = startidx;
-                        //for (; endidx < lineCode.Length; ++endidx) {
-                        //    if (BREAKCHARS.Contains(lineCode[endidx]))
-                        //        break;
-                        //    if (Char.IsLetter(lineCode[endidx]) || Char.IsDigit(lineCode[endidx])) {
-                        //        ++endidx;
-                        //    } else
-                        //        break;
-                        //}
-                        //if (startidx < endidx && endidx < lineCode.Length) {
-                        //    string word = lineCode.Substring(startidx, endidx - startidx);
-                        //    if (!word.Equals(text)) {
-                        //        if (!suggestions.Contains(word.Trim()))
-                        //            suggestions.Add(word.Trim());
-                        //    }
-                        //}
                     }
                 }
                 --line;
@@ -60,7 +37,7 @@ namespace Debugger.IDE.Intellisense {
         public TypeInfo GetClassType(TextDocument aDoc, int line, string text) {
             if (globals_ == null)
                 return null;
-            --line; //subtract one
+            --line; //subtract one for how AvalonEdit stores text versus reports its position
             int startLine = line;
             if (text.Equals("this")) { //easy case
                 int depth = scanner_.GetBraceDepth(line);

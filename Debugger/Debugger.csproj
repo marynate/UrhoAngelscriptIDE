@@ -82,16 +82,6 @@
     <Compile Include="ConfirmDlg.xaml.cs">
       <DependentUpon>ConfirmDlg.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Design\DesignModel.cs" />
-    <Compile Include="Design\DesignScreen.xaml.cs">
-      <DependentUpon>DesignScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Design\TileChunkList.xaml.cs">
-      <DependentUpon>TileChunkList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Design\TilePalette.xaml.cs">
-      <DependentUpon>TilePalette.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Dlg\ErrorDlg.xaml.cs">
       <DependentUpon>ErrorDlg.xaml</DependentUpon>
     </Compile>
@@ -112,10 +102,8 @@
     <Compile Include="Editor\SearchResultBackgroundRenderer.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="FileOperationWrapper.cs" />
-    <Compile Include="IDE\Activity\APIDocWatcher.cs" />
     <Compile Include="IDE\Activity\CompilerActivity.cs" />
     <Compile Include="IDE\Activity\IDBBuilderActivity.cs" />
-    <Compile Include="IDE\Activity\IntellisenseActivity.cs" />
     <Compile Include="IDE\Activity\SearchActivity.cs" />
     <Compile Include="IDE\API\APIDocumentation.cs" />
     <Compile Include="IDE\ClassDiagram.cs" />
@@ -154,12 +142,8 @@
     <Compile Include="IDE\Intellisense\CompletionData.cs" />
     <Compile Include="IDE\Intellisense\DepthScanner.cs" />
     <Compile Include="IDE\Intellisense\IntellisenseHelper.cs" />
-    <Compile Include="IDE\Intellisense\IStatementResolver.cs" />
     <Compile Include="IDE\Intellisense\NameResolver.cs" />
     <Compile Include="IDE\Intellisense\OverloadProvider.cs" />
-    <Compile Include="IDE\Intellisense\StatementResolution\FunctionResolver.cs" />
-    <Compile Include="IDE\Intellisense\StatementResolution\IndexerResolver.cs" />
-    <Compile Include="IDE\Intellisense\StatementResolution\MemberResolver.cs" />
     <Compile Include="IDE\Snippets\CodeSnippet.cs" />
     <Compile Include="IDE\Snippets\SnippetDlg.xaml.cs">
       <DependentUpon>SnippetDlg.xaml</DependentUpon>
@@ -207,18 +191,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ConfirmDlg.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Design\DesignScreen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Design\TileChunkList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Design\TilePalette.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -362,9 +334,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IDE\Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="next.png" />
     <EmbeddedResource Include="prev.png" />

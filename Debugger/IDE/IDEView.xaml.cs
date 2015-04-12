@@ -36,6 +36,7 @@ namespace Debugger.IDE {
             InitializeComponent();
             inst_ = this;
             gridSearch.DataContext = this;
+            Activity.IDBBuilderActivity.BuildIntellisenseDatabase();
         }
 
         //Compile the current file only
@@ -192,7 +193,6 @@ namespace Debugger.IDE {
         private void txtSearchString_PreviewKeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
                 Activity.SearchActivity.doSearch(txtSearchString.Text, IDEProject.inst().ProjectDir);
-                Activity.IDBBuilderActivity.BuildIntellisenseDatabase();
             }
         }
 

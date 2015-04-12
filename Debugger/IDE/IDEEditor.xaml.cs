@@ -232,6 +232,7 @@ namespace Debugger.IDE {
         }
 
         void editor_KeyUp(object sender, KeyEventArgs e) {
+            // These keys halt and terminate intellisense
             switch (e.Key) {
                 case Key.Home:
                 case Key.End:
@@ -240,10 +241,12 @@ namespace Debugger.IDE {
                 case Key.Escape:
                 case Key.LWin:
                 case Key.RWin:
+                case Key.Space:
                     if (currentComp != null)
                         currentComp.Close();
                     return;
             }
+            // These keys halt further checks
             switch (e.Key) {
                 case Key.Up:
                 case Key.Down:
@@ -263,7 +266,6 @@ namespace Debugger.IDE {
                 case Key.PrintScreen:
                 case Key.Print:
                     return;
-
             }
 
             char KEY = KeyHelpers.GetCharFromKey(e.Key);
@@ -382,17 +384,17 @@ namespace Debugger.IDE {
                         }
                     }
                 }
-                //??if (func != null) {
-                //??    CompletionWindow compWindow = new CompletionWindow(editor.TextArea);
-                //??    IList<ICompletionData> data = compWindow.CompletionList.CompletionData;
-                //??    foreach (FunctionInfo fi in info.Functions.Where(f => { return f.Name.Equals(func.Name); }))
-                //??        data.Add(new FunctionCompletionData(fi));
-                //??    if (data.Count > 0) {
-                //??        currentComp = compWindow;
-                //??        currentComp.Show();
-                //??        compWindow.Closed += comp_Closed;
-                //??    }
-                //??}
+                if (func != null) {
+                    List<FunctionInfo> data = new List<FunctionInfo>();
+                    foreach (FunctionInfo fi in info.Functions.Where(f => { return f.Name.Equals(func.Name); }))
+                        data.Add(fi);
+                    if (data.Count > 1) {
+                        OverloadInsightWindow window = new OverloadInsightWindow(editor.TextArea);
+                        window.Provider = new OverloadProvider(data.ToArray());
+                        window.Show();
+                        //compWindow.Closed += comp_Closed;
+                    }
+                }
             } else if (Char.IsLetter(KEY)) {
                 if (currentComp != null || editor.TextArea.Caret.Line == 1)
                     return;

@@ -57,14 +57,29 @@ namespace Debugger.IDE.Snippets {
             inputs_.Clear();
             CodeSnippet snip = snippetCombo.SelectedItem as CodeSnippet;
             foreach (CodeSnippetInput input in snip.Inputs) {
-                Label lbl = new Label { Content = input.Name, Margin = new Thickness(5.0) };
-                TextBox tb = new TextBox { Tag = input.Name, MinWidth = 160 };
-                tb.TextChanged += tb_TextChanged;
                 StackPanel pnl = new StackPanel { Orientation = Orientation.Horizontal };
-                pnl.Children.Add(lbl);
-                pnl.Children.Add(tb);
+                if (input is CodeSnippetOption)
+                {
+                    CheckBox cb = new CheckBox { Content = input.Name, Margin = new Thickness(5.0), Tag = input.Key };
+                    cb.Checked += cb_Checked;
+                    pnl.Children.Add(cb);
+                }
+                else
+                {
+                    Label lbl = new Label { Content = input.Name, Margin = new Thickness(5.0) };
+                    TextBox tb = new TextBox { Tag = input.Name, MinWidth = 160 };
+                    tb.TextChanged += tb_TextChanged;
+                    pnl.Children.Add(lbl);
+                    pnl.Children.Add(tb);
+                }
                 snippetInputs.Children.Add(pnl);
             }
+        }
+
+        void cb_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox src = sender as CheckBox;
+            inputs_[src.Tag.ToString()] = src.IsChecked.ToString().ToLower();
         }
 
         void tb_TextChanged(object sender, TextChangedEventArgs e) {
