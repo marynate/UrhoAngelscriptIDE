@@ -39,7 +39,7 @@ namespace Debugger.IDE {
         public IDEEditor(FileBaseItem aItem) {
             InitializeComponent();
             item = aItem;
-            bullshit = new Bullshit { editor = editor };
+            changeChecker = new DataChanged { editor = editor };
             SetCode(aItem);
             editor.ShowLineNumbers = true;
             if (aItem.Name.EndsWith(".as")) {
@@ -265,6 +265,7 @@ namespace Debugger.IDE {
                     return;
 
             }
+
             char KEY = KeyHelpers.GetCharFromKey(e.Key);
             if (KEY == ')' || KEY == ';') {
                 if (currentComp != null)
@@ -273,6 +274,12 @@ namespace Debugger.IDE {
             }
             int curOfs = editor.TextArea.Caret.Offset;
             int line = editor.TextArea.Caret.Line;
+
+            // Do not attempt intellisense inside of comments
+            string txt = editor.Document.GetText(editor.Document.Lines[editor.TextArea.Caret.Line - 1]);
+            if (txt.Trim().StartsWith("//"))
+                return;
+
             if (e.Key == Key.OemPeriod || KEY == ':') {
                 //IntellisenseHelper.ResemblesDotPath(editor.Document, curOfs-1, line-1)) {
                 int ofs = TextUtilities.GetNextCaretPosition(editor.Document, curOfs, LogicalDirection.Backward, CaretPositioningMode.WordStart);
@@ -389,6 +396,7 @@ namespace Debugger.IDE {
             } else if (Char.IsLetter(KEY)) {
                 if (currentComp != null || editor.TextArea.Caret.Line == 1)
                     return;
+
                 int ofs = TextUtilities.GetNextCaretPosition(editor.Document, curOfs, LogicalDirection.Backward, CaretPositioningMode.WordStart);
                 int nextOfs = TextUtilities.GetNextCaretPosition(editor.Document, ofs, LogicalDirection.Backward, CaretPositioningMode.WordStart);
                 if (nextOfs > 0) {
@@ -405,9 +413,10 @@ namespace Debugger.IDE {
                 if (word.Contains(".")) {
                     if (currentComp != null)
                         currentComp.Close();
-                    editor_KeyUp(sender, e);
+                    //editor_KeyUp(sender, e);
                     return;
                 }
+
                 NameResolver reso = new NameResolver(IDEProject.inst().GlobalTypes, scanner);
                 List<string> suggestions = new List<string>();
                 reso.GetNameMatch(editor.Document, editor.TextArea.Caret.Line - 1, word, ref suggestions);
@@ -444,9 +453,9 @@ namespace Debugger.IDE {
         }
         CompletionWindow currentComp = null;
 
-        public Bullshit bullshit { get; set; }
+        public DataChanged changeChecker { get; set; }
 
-        public class Bullshit : BaseClass {
+        public class DataChanged : BaseClass {
             public string code;
             public TextEditor editor;
 
@@ -468,7 +477,7 @@ namespace Debugger.IDE {
         public bool IsDirty {
             get {
                 if (item is FileLeafItem) {
-                    return bullshit.IsDirty;
+                    return changeChecker.IsDirty;
                 }
                 return false;
             }
@@ -476,7 +485,7 @@ namespace Debugger.IDE {
 
         void editor_TextChanged(object sender, EventArgs e) {
             MainWindow.inst().Dispatcher.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate() {
-                bullshit.Recheck();
+                changeChecker.Recheck();
                 DepthScanner newScan = new DepthScanner();
                 newScan.Process(editor.Text);
                 scanner = newScan;
@@ -489,8 +498,8 @@ namespace Debugger.IDE {
             try {
                 this.item = item;
                 editor.Text = File.ReadAllText(item.Path);
-                bullshit.code = editor.Text;
-                bullshit.IsDirty = false;
+                changeChecker.code = editor.Text;
+                changeChecker.IsDirty = false;
             }
             catch (Exception ex) {
                 ErrorHandler.inst().Error(ex);
@@ -499,9 +508,9 @@ namespace Debugger.IDE {
 
         public void Save() {
             File.WriteAllText(item.Path, editor.Text);
-            bullshit.code = editor.Text;
+            changeChecker.code = editor.Text;
             MainWindow.inst().Dispatcher.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate() {
-                bullshit.Recheck();
+                changeChecker.Recheck();
             });
         }
 

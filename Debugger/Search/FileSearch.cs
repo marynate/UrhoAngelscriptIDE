@@ -62,13 +62,13 @@ namespace Debugger.Search
                 foreach (string term in aTerms)
                 {
                     string lCaseLine = line.ToLowerInvariant();
-                    if (lCaseLine.Contains(term))
+                    if (lCaseLine.Contains(term.ToLowerInvariant()))
                     {
                         SearchResult result = new SearchResult { 
                             Column = line.IndexOf(term), 
                             Line = lineNumber, 
                             File = aFile,
-                            Text = line };
+                            Text = line.Trim() };
                         PushResult(result);
                     }
                 }

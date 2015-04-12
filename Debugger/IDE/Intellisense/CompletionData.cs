@@ -44,7 +44,7 @@ namespace Debugger.IDE.Intellisense {
                         //repeated appearance
                         BitmapImage bmp = new BitmapImage();
                         bmp.BeginInit();
-                        bmp.UriSource = new Uri(string.Format("pack://application:,,,/Debugger;component/Images/all/{0}", img_), UriKind.Absolute);
+                        bmp.UriSource = new Uri(string.Format("pack://application:,,,/asDevelop;component/Images/all/{0}", img_), UriKind.Absolute);
                         bmp.EndInit();
                         img = bmp;
                         sourcePool[img_] = bmp;

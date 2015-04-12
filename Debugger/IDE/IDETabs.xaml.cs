@@ -48,7 +48,7 @@ namespace Debugger.IDE {
             IDEEditor ideEditor = new IDEEditor(aFile);
 
             TextBlock txt = new TextBlock { Text = aFile.Name };
-            txt.DataContext = ideEditor.bullshit;
+            txt.DataContext = ideEditor.changeChecker;
             txt.Foreground = FindResource("ButtonText") as Brush;
             txt.Style = FindResource("IDETabHeader") as Style;
 

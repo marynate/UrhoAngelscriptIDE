@@ -69,7 +69,7 @@ namespace Debugger.IDE.API {
     public class APIDocumentation : BaseClass {
         public APIDocumentation() {
             if (root_ == null) {
-                string dir = System.Reflection.Assembly.GetEntryAssembly().Location.Replace("\\Debugger.exe", "");
+                string dir = System.Reflection.Assembly.GetEntryAssembly().Location.Replace("\\asDevelop.exe", "");
                 dir += "\\bin\\documentation.dox";
 
                 string[] lines = File.ReadAllLines(dir);

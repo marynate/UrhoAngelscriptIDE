@@ -10,7 +10,7 @@ namespace Debugger.IDE.Intellisense {
     //Works with DepthScanner data to start from current position,
     //scan lines upwards looking for lines containing the term
     public class NameResolver {
-        static readonly char[] BREAKCHARS = { ' ', '.', '*','/','%','(','{','}',')',';','=','[',']','\t','\r','\n'};
+        static readonly char[] BREAKCHARS = { ' ', '.', ',', '*','/','%','(','{','}',')',';','=','[',']','\t','\r','\n'};
         DepthScanner scanner_;
         Globals globals_;
 
@@ -101,9 +101,10 @@ namespace Debugger.IDE.Intellisense {
 
                                 }
                             } else {
-                                string rettype = words[0].Replace("@", "");
+                                string rettype = FilterTypeName(words[0]);
+                                string propname = FilterTypeName(words[1]);
                                 if (globals_.Classes.ContainsKey(rettype)) {
-                                    tempType.Properties[words[1]] = globals_.Classes[rettype];
+                                    tempType.Properties[propname] = globals_.Classes[rettype];
                                 }
                             }
                         }
@@ -113,7 +114,7 @@ namespace Debugger.IDE.Intellisense {
                 return tempType;
             }
 
-            //SCOPE block for depth bullshit
+            //SCOPE block for depth
             {
                 int depth = scanner_.GetBraceDepth(line);
                 bool indexType = false;
@@ -127,15 +128,23 @@ namespace Debugger.IDE.Intellisense {
                         int endidx = lineCode.IndexOf(text);
                         int idx = endidx;
                         bool okay = true;
+                        bool hitSpace = false;
                         while (idx > 0) { //scan backwards to find the typename
-                            if (!char.IsLetter(lineCode[idx]) && lineCode[idx] != ' ' && lineCode[idx] != '@') {
+                            if (!char.IsLetter(lineCode[idx]) && lineCode[idx] != ' ' && lineCode[idx] != '@' && lineCode[idx] != '&') {
                                 okay = false;
+                                ++idx;
+                                break;
+                            }
+                            if (!hitSpace && lineCode[idx] == ' ')
+                                hitSpace = true;
+                            else if (lineCode[idx] == ' ')
+                            {
                                 break;
                             }
                             --idx;
                         }
                         if (idx < 0) idx = 0;
-                        string substr = endidx - idx > 0 ? lineCode.Substring(idx, endidx - idx).Trim().Replace("@", "") : "";
+                        string substr = endidx - idx > 0 ? FilterTypeName(lineCode.Substring(idx, endidx - idx).Trim()) : "";
                         if (substr.Length > 0) { //not empty
                             if (substr.StartsWith(">")) {//TEMPLATE DEFINITION
                                 if (!indexType)
@@ -158,6 +167,11 @@ namespace Debugger.IDE.Intellisense {
                 } while (depth > 0 && line > 0);
                 return null;
             }
+        }
+
+        string FilterTypeName(string input)
+        {
+            return input.Replace("@", "").Replace("&in", "").Replace("&", "").Replace(";","");
         }
     }
 }
