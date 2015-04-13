@@ -16,6 +16,7 @@ namespace Debugger.IDE {
         public string Name { get; set; }
         public bool ReadOnly { get; set; }
         public bool IsReference { get; set; }
+        public TypeInfo Container { get; set; } //only relevant to the master class list
         public TypeInfo Type { get; set; }
         public TypeInfo WrappedType { get; set; } //only relevant when we're a template
 

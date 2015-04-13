@@ -135,34 +135,54 @@
                             <TreeView Name="objectTree" ItemsSource="{Binding GlobalTypes.TypeInfo}">
                                 <TreeView.Resources>
                                     <HierarchicalDataTemplate DataType="{x:Type IDE:EnumInfo}" ItemsSource="{Binding Values}">
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal" Tag="{Binding}">
                                             <Image Source="/Images/all/enum.png" />
                                             <TextBlock Text="enum "/>
                                             <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                            <StackPanel.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="Document" Click="onDocumentClasses" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                                                </ContextMenu>
+                                            </StackPanel.ContextMenu>
                                         </StackPanel>
                                     </HierarchicalDataTemplate>
                                     <HierarchicalDataTemplate DataType="{x:Type IDE:TypeInfo}" ItemsSource="{Binding PropertyUI}">
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal" Tag="{Binding}">
                                             <Image Source="/Images/all/class.png" />
                                             <TextBlock Text="{Binding Description}"/>
                                             <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                            <StackPanel.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="Document" Click="onDocumentClasses" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                                                </ContextMenu>
+                                            </StackPanel.ContextMenu>
                                         </StackPanel>
                                     </HierarchicalDataTemplate>
                                     <DataTemplate DataType="{x:Type IDE:PropInfo}">
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal" Tag="{Binding}">
                                             <Image Source="{Binding ImgSource}" />
                                             <!--<Image Source="/Images/all/property.png" />-->
                                             <TextBlock Text="{Binding Name}" Margin="2,0"/>
                                             <TextBlock Text=":" Margin="0" />
                                             <TextBlock Text="{Binding Type.Name}" Margin="5,0" />
+                                            <StackPanel.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="Document" Click="onDocumentClasses" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                                                </ContextMenu>
+                                            </StackPanel.ContextMenu>
                                         </StackPanel>
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type IDE:FunctionInfo}">
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal" Tag="{Binding}">
                                             <Image Source="/Images/all/method.png" />
                                             <TextBlock Text="{Binding ReturnType.Name}" Margin="5,2" />
                                             <TextBlock Text="{Binding Name}" Margin="2"/>
                                             <TextBlock Text="{Binding Inner}" Margin="2"/>
+                                            <StackPanel.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="Document" Click="onDocumentClasses" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                                                </ContextMenu>
+                                            </StackPanel.ContextMenu>
                                         </StackPanel>
                                     </DataTemplate>
                                 </TreeView.Resources>

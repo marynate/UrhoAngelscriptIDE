@@ -41,6 +41,8 @@ namespace Debugger.IDE.Intellisense {
                 char c = doc.Text[i];
                 if (c == '.')
                     ++dotsHit;
+                else if (c == ':')
+                    ++dotsHit;
                 else if (!Char.IsLetterOrDigit(c))
                     break;
             }

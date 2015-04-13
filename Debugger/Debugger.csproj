@@ -72,9 +72,6 @@
     <Compile Include="Controls\AltDocViewer.xaml.cs">
       <DependentUpon>AltDocViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DocViewer.xaml.cs">
-      <DependentUpon>DocViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\IDocMenuBuilder.cs" />
     <Compile Include="Controls\JWrapView.xaml.cs">
       <DependentUpon>JWrapView.xaml</DependentUpon>
@@ -91,6 +88,10 @@
     <Compile Include="Dlg\SettingsDlg.xaml.cs">
       <DependentUpon>SettingsDlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Docs\DocDatabase.cs" />
+    <Compile Include="Docs\DocumentDlg.xaml.cs">
+      <DependentUpon>DocumentDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DrawingUtility.cs" />
     <Compile Include="Editor\BraceHighlighter.cs" />
     <Compile Include="Editor\BreakpointMargin.cs" />
@@ -106,7 +107,6 @@
     <Compile Include="IDE\Activity\IDBBuilderActivity.cs" />
     <Compile Include="IDE\Activity\SearchActivity.cs" />
     <Compile Include="IDE\API\APIDocumentation.cs" />
-    <Compile Include="IDE\ClassDiagram.cs" />
     <Compile Include="IDE\Dlg\CompErrDlg.xaml.cs">
       <DependentUpon>CompErrDlg.xaml</DependentUpon>
     </Compile>
@@ -117,18 +117,18 @@
       <DependentUpon>NewFileDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="IDE\ErrorLineHighlighter.cs" />
-    <Compile Include="IDE\FileModel.cs" />
+    <Compile Include="IDE\Model\FileModel.cs" />
     <Compile Include="IDE\IDEDashboard.xaml.cs">
       <DependentUpon>IDEDashboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="IDE\IDEEditor.xaml.cs">
       <DependentUpon>IDEEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IDE\IDEModel.cs" />
+    <Compile Include="IDE\Model\IDEModel.cs" />
     <Compile Include="IDE\IDEResources.xaml.cs">
       <DependentUpon>IDEResources.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IDE\IDESettings.cs" />
+    <Compile Include="IDE\Model\IDESettings.cs" />
     <Compile Include="IDE\IDESettingsDlg.xaml.cs">
       <DependentUpon>IDESettingsDlg.xaml</DependentUpon>
     </Compile>
@@ -144,6 +144,9 @@
     <Compile Include="IDE\Intellisense\IntellisenseHelper.cs" />
     <Compile Include="IDE\Intellisense\NameResolver.cs" />
     <Compile Include="IDE\Intellisense\OverloadProvider.cs" />
+    <Compile Include="IDE\Model\Compiling.cs" />
+    <Compile Include="IDE\Model\IDEFile.cs" />
+    <Compile Include="IDE\Model\SearchResult.cs" />
     <Compile Include="IDE\Snippets\CodeSnippet.cs" />
     <Compile Include="IDE\Snippets\SnippetDlg.xaml.cs">
       <DependentUpon>SnippetDlg.xaml</DependentUpon>
@@ -182,10 +185,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\DocViewer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\JWrapView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -203,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dlg\SettingsDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Docs\DocumentDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

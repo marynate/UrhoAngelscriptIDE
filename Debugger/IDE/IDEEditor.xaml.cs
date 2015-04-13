@@ -211,12 +211,22 @@ namespace Debugger.IDE {
                             }
 
                             string msg = "";
+                            // Ask documentation for the information
                             if (info != null && func != null) { //member function
                                 msg = func.ReturnType.Name + " " + func.Name;
+                                string m = IDEProject.inst().DocDatabase.GetDocumentationFor(info.Name + "::" + func.Name + func.Inner);
+                                if (m != null)
+                                    msg += "\r\n" + m;
                             } else if (func != null) { //global function
                                 msg = func.ReturnType.Name + " " + func.Name;
+                                string m = IDEProject.inst().DocDatabase.GetDocumentationFor(func.Name + func.Inner);
+                                if (m != null)
+                                    msg += "\r\n" + m;
                             } else if (info != null) { //global or member type
                                 msg = info.Name;
+                                string m = IDEProject.inst().DocDatabase.GetDocumentationFor(info.Name);
+                                if (m != null)
+                                    msg += "\r\n" + m;
                             }
 
                             if (msg.Length > 0) {
@@ -388,9 +398,22 @@ namespace Debugger.IDE {
                     List<FunctionInfo> data = new List<FunctionInfo>();
                     foreach (FunctionInfo fi in info.Functions.Where(f => { return f.Name.Equals(func.Name); }))
                         data.Add(fi);
-                    if (data.Count > 1) {
+                    if (data.Count > 0) {
                         OverloadInsightWindow window = new OverloadInsightWindow(editor.TextArea);
-                        window.Provider = new OverloadProvider(data.ToArray());
+                        window.Provider = new OverloadProvider(info, data.ToArray());
+                        window.Show();
+                        //compWindow.Closed += comp_Closed;
+                    }
+                } 
+                else if (func == null && info == null) // Found nothing
+                {
+                    List<FunctionInfo> data = new List<FunctionInfo>();
+                    foreach (FunctionInfo fi in IDEProject.inst().GlobalTypes.Functions.Where(f => { return f.Name.Equals(words[1]); }))
+                        data.Add(fi);
+                    if (data.Count > 0)
+                    {
+                        OverloadInsightWindow window = new OverloadInsightWindow(editor.TextArea);
+                        window.Provider = new OverloadProvider(info, data.ToArray());
                         window.Show();
                         //compWindow.Closed += comp_Closed;
                     }

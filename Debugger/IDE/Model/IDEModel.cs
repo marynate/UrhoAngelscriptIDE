@@ -18,60 +18,6 @@ namespace Debugger.IDE {
         public ObservableCollection<CompileLog> CompilerLog { get; set; }
     }
 
-    public enum CompilerMsgType {
-        Warning,
-        Error
-    }
-
-    public class SearchResult : BaseClass {
-        string text_;
-        string file_;
-        int line_;
-        int column_;
-
-        public String ShortFile { get { return System.IO.Path.GetFileName(File);  } }
-
-        public int Line { get { return line_; } set { line_ = value; OnPropertyChanged("Line"); } }
-        public int Column { get { return column_; } set { column_ = value; OnPropertyChanged("Column"); } }
-        public String Text { get { return text_; } set { text_ = value; OnPropertyChanged("Text"); } }
-        public String File { get { return file_; } set { file_ = value; OnPropertyChanged("File"); } }
-    }
-
-    public class CompileLog : BaseClass {
-        string msg_ = "";
-        CompilerMsgType msgType_;
-
-        public CompilerMsgType MsgType {
-            get { return msgType_; }
-            set { msgType_ = value; OnPropertyChanged("MsgType"); }
-        }
-
-        public string Message { 
-            get { return msg_; } 
-            set { msg_ = value; OnPropertyChanged("Message"); } 
-        }
-    }
-
-    public class CompileError : BaseClass {
-        int line_ = 0;
-        string msg_ = "";
-        string file_ = "";
-
-        public string File {
-            get { return file_; }
-            set { file_ = value; OnPropertyChanged("File"); }
-        }
-
-        public int Line {
-            get { return line_; }
-            set { line_ = value; OnPropertyChanged("Line"); }
-        }
-
-        public string Message {
-            get { return msg_; }
-            set { msg_ = value; OnPropertyChanged("Message"); }
-        }
-    }
 
     [Serializable]
     public class IDEProject : NamedBaseClass {
@@ -82,6 +28,7 @@ namespace Debugger.IDE {
         public IDEProject() {
             inst_ = this;
             documentation_ = new API.APIDocumentation();
+            docDatabase_ = new Docs.DocDatabase();
         }
 
         string filePath_ = "";
@@ -95,6 +42,10 @@ namespace Debugger.IDE {
         Globals intellisenseGlobals_;
         ObservableCollection<CompileError> errors_ = new ObservableCollection<CompileError>();
         string compileOutput_;
+        Docs.DocDatabase docDatabase_;
+
+        [XmlIgnore]
+        public Docs.DocDatabase DocDatabase { get { return docDatabase_; } }
 
         [XmlIgnore]
         public API.APIDocumentation Documentation { get { return documentation_; } set { documentation_ = value; OnPropertyChanged("Documentation"); } }
@@ -145,17 +96,7 @@ namespace Debugger.IDE {
                 inst_ = new IDEProject();
             } else {
                 try {
-                    IDEProject.open();
-
-                    //if (File.Exists(aPath)) {
-                    //    System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(IDEProject));
-                    //    IDEProject ud = inst_ = new IDEProject();
-                    //    using (System.IO.FileStream file = new System.IO.FileStream(aPath, FileMode.Open, FileAccess.Read, FileShare.Read)) {
-                    //        ud = (IDEProject)reader.Deserialize(file);
-                    //        file.Close();
-                    //    }
-                    //    UserData.inst().AddRecentFile(ud.FilePath);
-                    //}
+                    IDEProject.open(); //Interesting?
                 }
                 catch (Exception ex) {
                     ErrorHandler.inst().Error(ex);
@@ -168,28 +109,4 @@ namespace Debugger.IDE {
         }
     }
 
-    public class IDEFile : BaseClass {
-        public static readonly int SAVE_DELTA = 50; //we'll trigger an auto-save at
-
-        string code_ = "";
-        string fileName_ = "";
-        int accumulatedChangeDelta_ = 0;
-        DateTime lastSaveTime_ = DateTime.Now;
-
-        public string Code {
-            get { return code_; }
-            set {
-                code_ = value;
-                OnPropertyChanged("Code");
-            }
-        }
-
-        public string FileName {
-            get { return fileName_; }
-            set {
-                fileName_ = value;
-                OnPropertyChanged("FileName");
-            }
-        }
-    }
 }

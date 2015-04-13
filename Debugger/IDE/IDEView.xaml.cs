@@ -309,5 +309,44 @@ namespace Debugger.IDE {
             pi.StartInfo.RedirectStandardOutput = false;
             pi.Start();
         }
+
+        private void onDocumentClasses(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = sender as MenuItem;
+            ContextMenu menu = item.CommandParameter as ContextMenu;
+
+            TypeInfo ti = (menu.PlacementTarget as StackPanel).Tag as TypeInfo;
+            if (ti != null)
+            {
+                IDEProject.inst().DocDatabase.Document(ti.Name);
+                return;
+            }
+            PropInfo pi = (menu.PlacementTarget as StackPanel).Tag as PropInfo;
+            if (pi != null)
+            {
+                // Get the parent treeitem
+                TreeViewItem treeViewItem = VisualUpwardSearch(VisualTreeHelper.GetParent(VisualUpwardSearch(menu.PlacementTarget as DependencyObject)));
+                TypeInfo parentType = treeViewItem.DataContext as TypeInfo;
+                IDEProject.inst().DocDatabase.Document(parentType.Name + "::" + pi.Name);
+                return;
+            }
+            FunctionInfo fi = (menu.PlacementTarget as StackPanel).Tag as FunctionInfo;
+            if (fi != null)
+            {
+                TreeViewItem treeViewItem = VisualUpwardSearch(VisualTreeHelper.GetParent(VisualUpwardSearch(menu.PlacementTarget as DependencyObject)));
+                TypeInfo parentType = treeViewItem.DataContext as TypeInfo;
+                IDEProject.inst().DocDatabase.Document(parentType.Name + "::" + fi.Name + fi.Inner);
+                return;
+            }
+        }
+
+
+        static TreeViewItem VisualUpwardSearch(DependencyObject source)
+        {
+            while (source != null && !(source is TreeViewItem))
+                source = VisualTreeHelper.GetParent(source);
+
+            return source as TreeViewItem;
+        }
     }
 }

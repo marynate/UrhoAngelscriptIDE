@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace Debugger.IDE.Intellisense {
@@ -11,18 +12,13 @@ namespace Debugger.IDE.Intellisense {
     // Used by AvalonEdit for handling function overloads
 
     public class OverloadProvider : IOverloadProvider {
+        TypeInfo source;
         List<FunctionInfo> functions_;
         int index_ = 0;
-        System.Windows.Controls.TextBlock currentText_;
 
-        void UpdateText()
-        {
-            if (currentText_ != null)
-                currentText_.Text = "Todo: Get function documentation"; 
-        }
-
-        public OverloadProvider(params FunctionInfo[] funcs) {
+        public OverloadProvider(TypeInfo source, params FunctionInfo[] funcs) {
             functions_ = new List<FunctionInfo>(funcs);
+            this.source = source;
         }
 
         public int Count {
@@ -30,13 +26,47 @@ namespace Debugger.IDE.Intellisense {
         }
 
         public object CurrentContent {
-            get { 
-                if (currentText_ == null) {
-                    currentText_ = new System.Windows.Controls.TextBlock();
+            get {
+                if (source != null)
+                {
+                    string docName = source.Name + "::" + functions_[SelectedIndex].Name + functions_[SelectedIndex].Inner;
+                    string docText = IDEProject.inst().DocDatabase.GetDocumentationFor(docName);
+                    if (docText != null)
+                        return new TextBlock { Text = docText };
+                    StackPanel stck = new StackPanel { Orientation = Orientation.Horizontal };
+                    stck.Children.Add(new TextBlock { Text = "Undocumented" });
+                    Button docBtn = new Button { Content = "Document" };
+                    docBtn.Click += docBtn_Click;
+                    stck.Children.Add(docBtn);
+                    return stck;
                 }
-                UpdateText();
-                return currentText_;
-                //return string.Format("{0}{1}\r\n", functions_[SelectedIndex].Name, functions_[SelectedIndex].Inner); 
+                else
+                {
+                    string docName = functions_[SelectedIndex].Name + functions_[SelectedIndex].Inner;
+                    string docText = IDEProject.inst().DocDatabase.GetDocumentationFor(docName);
+                    if (docText != null)
+                        return new TextBlock { Text = docText };
+                    StackPanel stck = new StackPanel { Orientation = Orientation.Horizontal };
+                    stck.Children.Add(new TextBlock { Text = "Undocumented" });
+                    Button docBtn = new Button { Content = "Document" };
+                    docBtn.Click += docBtn_Click;
+                    stck.Children.Add(docBtn);
+                    return stck;
+                }
+            }
+        }
+
+        void docBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (source != null)
+            {
+                string docName = source.Name + "::" + functions_[SelectedIndex].Name + functions_[SelectedIndex].Inner;
+                IDEProject.inst().DocDatabase.Document(docName);
+            }
+            else
+            {
+                string docName = functions_[SelectedIndex].Name + functions_[SelectedIndex].Inner;
+                IDEProject.inst().DocDatabase.Document(docName);
             }
         }
 
@@ -55,7 +85,7 @@ namespace Debugger.IDE.Intellisense {
             }
             set {
                 index_ = value;
-                UpdateText();
+                PropertyChanged.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("CurrentContent"));
                 PropertyChanged.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("CurrentHeader"));
                 PropertyChanged.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("CurrentIndexText"));
                 PropertyChanged.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("SelectedIndex"));
