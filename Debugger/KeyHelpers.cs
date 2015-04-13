@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Debugger {
+
+    /// <summary>
+    /// Used for identifying less easily identified keystrokes in the code editors
+    /// </summary>
     public static class KeyHelpers {
         public enum MapType : uint {
             MAPVK_VK_TO_VSC = 0x0,

@@ -11,7 +11,11 @@ using WebSocket4Net;
 
 namespace Debugger.Net {
 
-    //Client for the asPEEK embedded debugger
+    /// <summary>
+    /// Client for the asPEEK embedded debugger, main workhorse of the Debugger
+    /// 
+    /// Sends/receives messages to/from an asPEEK daemon
+    /// </summary>
     public class DebugClient {
         SessionData session_;
         WebSocket socket_;
@@ -221,8 +225,6 @@ namespace Debugger.Net {
                         int id = obj.Property("id").Value.ToObject<int>();
                         string module = obj.Property("mod").Value.ToString();
                         string name = obj.Property("name").Value.ToString();
-                        //??if (name.Trim().Length == 0) //ignore that empty one for the immediate mode context
-                        //??    return;
                         MainWindow.inst().Dispatcher.Invoke(delegate() {
                             FileData fd = session_.Files.FirstOrDefault(file => file.SectionName.Equals(name));
                             if (fd == null) {

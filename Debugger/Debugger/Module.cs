@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Debugger.Debug {
+
+    /// <summary>
+    /// Module information from asPEEK
+    /// </summary>
     public class Module : BaseClass {
         string name_;
 

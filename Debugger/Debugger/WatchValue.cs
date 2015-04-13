@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace Debugger.Debug {
     
+    /// <summary>
+    /// A 'stringified' as dot path expression
+    /// 
+    /// Resolves against the locals/this/globals JWrapper trees
+    /// </summary>
     public class WatchValue : BaseClass {
         string path_ = "";
         string evaluatedAs_= "";

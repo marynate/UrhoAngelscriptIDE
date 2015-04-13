@@ -16,7 +16,8 @@ using System.Windows.Shapes;
 
 namespace Debugger.Controls {
     /// <summary>
-    /// Interaction logic for AltDocViewer.xaml
+    /// Treeview for IDE.API.APIDocumentation nodes and leaves
+    /// Three instances are seen in tabs to the right of the UI
     /// </summary>
     public partial class AltDocViewer : UserControl {
         public AltDocViewer() {

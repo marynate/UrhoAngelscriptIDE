@@ -7,6 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Debugger {
+
+    /// <summary>
+    /// Contains the saved userdata about project paths / settings
+    /// Saved system 'appdata' location
+    /// </summary>
     [Serializable]
     public class UserData : BaseClass {
         static UserData inst_;

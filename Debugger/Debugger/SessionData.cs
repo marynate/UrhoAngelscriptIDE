@@ -7,6 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Debugger.Debug {
+
+    /// <summary>
+    /// Blob class containing all the information about a debugging session with an asPEEK daemon
+    /// </summary>
     public class SessionData : BaseClass {
         string connection_;
         bool isConnected_;

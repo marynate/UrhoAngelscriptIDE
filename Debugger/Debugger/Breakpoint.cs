@@ -5,6 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Debugger.Debug {
+
+    /// <summary>
+    /// Manages a breakpoint
+    /// 
+    /// To the asPEEK daemon, active_ == false is equivalent to 'removed'
+    /// The 'inactive' breakpoint is kept in the debugger until deleted so that it can
+    /// be quickly turned on/off while hiding the 'breakpoint set' and 'breakpoint removed'
+    /// </summary>
     public class Breakpoint : BaseClass {
         int line_;
         int sectionID_;

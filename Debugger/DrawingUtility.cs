@@ -7,6 +7,9 @@ using System.Windows;
 using System.Windows.Media;
 
 namespace Debugger {
+    /// <summary>
+    /// Unused functions meant for drawing curves between points
+    /// </summary>
     static class DrawingUtility {
         // linear equation solver utility for ai + bj = c and di + ej = f
         static void solvexy(double a, double b, double c, double d, double e, double f, out double i, out double j) {

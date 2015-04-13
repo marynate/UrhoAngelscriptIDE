@@ -8,6 +8,11 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Debugger.IDE.Activity {
+
+    /// <summary>
+    /// Performs a "find in files" search
+    /// Notably the search is limited to files of < 128kb
+    /// </summary>
     public class SearchActivity {
         public static void doSearch(string text, string path) {
             IDEView.inst().SearchResults.Clear();

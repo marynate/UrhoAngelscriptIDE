@@ -7,6 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Debugger {
+
+    /// <summary>
+    /// Extension methods for AvalonEdit
+    /// </summary>
     public static class AvalonExtensions {
         public static string GetWordUnderMouse(this TextDocument document, TextViewPosition position, bool cancelDot) {
             string wordHovered = string.Empty;

@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 
 namespace Debugger {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Master program window
     /// </summary>
     public partial class MainWindow : ModernWindow {
         static MainWindow inst_;
@@ -34,7 +34,6 @@ namespace Debugger {
             InitializeComponent();
             AppearanceManager.Current.ThemeSource = AppearanceManager.DarkThemeSource;
             AppearanceManager.Current.AccentColor = Colors.DarkOliveGreen;
-            //ContentSource = new Uri("Screens/TestDock.xaml", UriKind.Relative);
             ContentSource = new Uri("Screens/LaunchScreen.xaml", UriKind.Relative);
             LinkNavigator.Commands.Add(new Uri("cmd://showSettings", UriKind.Absolute), new RelayCommand(o => showSettings()));
             errTimer = new Timer();

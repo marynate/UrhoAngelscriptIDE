@@ -9,11 +9,17 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Debugger.IDE.Activity {
+
+    /// <summary>
+    /// Invokes the ScriptCompiler in the bin directory
+    /// Receives console output which is used to generate error messages
+    /// Console output is also written to the compiler output "raw" log
+    /// </summary>
     public class CompilerActivity {
         public static void Compile(string aToCompile) {
             
             string dir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-            dir += "\\bin\\ScriptCompiler.exe";
+            dir = System.IO.Path.Combine(System.IO.Path.Combine(dir, "bin"), "ScriptCompiler.exe");
 
             //Thread thread = new Thread(delegate() {
                 Process pi = new Process();

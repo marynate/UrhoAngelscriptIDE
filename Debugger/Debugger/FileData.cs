@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Debugger.Debug {
 
+    /// <summary>
+    /// File/section data from an asPEEK client
+    /// </summary>
     public class FileData : BaseClass {
         int id_;
         string mod_;

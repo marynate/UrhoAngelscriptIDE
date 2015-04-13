@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 using System.IO;
 
 namespace Debugger.IDE.Activity {
+
+    /// <summary>
+    /// Builds the TypeInfo database either when started
+    /// or when the filesystem watcher detects a change
+    /// 
+    /// The typesystem is considered to be volatile, and may be there one minute, and missing the next
+    /// </summary>
     public class IDBBuilderActivity {
         static FileSystemWatcher watcher_;
 
@@ -16,7 +23,7 @@ namespace Debugger.IDE.Activity {
             dir = System.IO.Path.GetDirectoryName(dir);
             dir = System.IO.Path.Combine(dir, "bin");
             string file = System.IO.Path.Combine(dir, "dump.h");
-            //dir += "\\bin\\dump.h";
+            
             if (watcher_ == null) {
                 watcher_ = new FileSystemWatcher(dir);
                 watcher_.Changed += watcher__Changed;

@@ -15,7 +15,8 @@ using System.Windows.Shapes;
 
 namespace Debugger.Controls {
     /// <summary>
-    /// Interaction logic for JWrapView.xaml
+    /// Treeview for the JWrapper and JLeaf classes
+    /// Used by the Debugger's locals/this/globals
     /// </summary>
     public partial class JWrapView : UserControl {
         public JWrapView() {

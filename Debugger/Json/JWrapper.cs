@@ -6,6 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Debugger.Json {
+
+    /// <summary>
+    /// Turns JSON received from the asPEEK daemon into a more easily used tree structure
+    /// </summary>
     public class JWrapper : BaseClass {
 
         public static string[] SubArray(string[] data, int index, int length) {

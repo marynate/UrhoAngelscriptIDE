@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 namespace Debugger {
     /// <summary>
-    /// Interaction logic for RenameDlg.xaml
+    /// Dialog to be used for all (basic) cases of renaming something, such as files and folders
     /// </summary>
     public partial class RenameDlg : ModernDialog {
         public static string Show(string name) {

@@ -8,6 +8,13 @@ using System.Threading.Tasks;
 
 namespace Debugger.IDE.Activity
 {
+
+    /// <summary>
+    /// Invokes the ScriptCompiler to generate documentation and API dumps
+    /// Used after a successful compilation
+    /// 
+    /// The IDBBuilderActivity will respond to the updated dump header and rebuild on its own
+    /// </summary>
     public class BuildDumpActivity {
         public static void CreateDumps()
         {
