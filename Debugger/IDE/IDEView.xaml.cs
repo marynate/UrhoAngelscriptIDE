@@ -22,12 +22,12 @@ namespace Debugger.IDE {
     /// <summary>
     /// Interaction logic for IDEView.xaml
     /// </summary>
-    public partial class IDEView : UserControl, IContent {
+    public partial class IDEView : UserControl, IContent, PluginLib.ISearchPublisher {
         IDEProject project_;
         Folder folder_;
-        ObservableCollection<SearchResult> searchResults_ = new ObservableCollection<SearchResult>();
+        ObservableCollection<PluginLib.SearchResult> searchResults_ = new ObservableCollection<PluginLib.SearchResult>();
 
-        public ObservableCollection<SearchResult> SearchResults { get { return searchResults_; } }
+        public ObservableCollection<PluginLib.SearchResult> SearchResults { get { return searchResults_; } }
 
         static IDEView inst_;
         public static IDEView inst() { return inst_; }
@@ -37,6 +37,10 @@ namespace Debugger.IDE {
             inst_ = this;
             gridSearch.DataContext = this;
             Activity.IDBBuilderActivity.BuildIntellisenseDatabase();
+            
+            foreach (PluginLib.ISearchService searchService in PluginManager.inst().SearchServices)
+                comboSearchType.Items.Add(searchService.Name);
+            comboSearchType.SelectedIndex = 0;
         }
 
         //Compile the current file only
@@ -192,13 +196,26 @@ namespace Debugger.IDE {
 
         private void txtSearchString_PreviewKeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
-                Activity.SearchActivity.doSearch(txtSearchString.Text, IDEProject.inst().ProjectDir);
+                if (comboSearchType.SelectedItem == null)
+                {
+                    return;
+                }
+                searchResults_.Clear();
+                string selSearchKind = comboSearchType.SelectedItem.ToString();
+                foreach (PluginLib.ISearchService searchService in PluginManager.inst().SearchServices) 
+                {
+                    if (searchService.Name.Equals(selSearchKind))
+                    {
+                        searchService.Search(IDEProject.inst().ProjectDir, new string[] { txtSearchString.Text }, this);
+                        break;
+                    }
+                }
             }
         }
 
         void searchDoubleClick(object sender, MouseEventArgs args) {
             DataGridRow row = sender as DataGridRow;
-            SearchResult result = row.DataContext as SearchResult;
+            PluginLib.SearchResult result = row.DataContext as PluginLib.SearchResult;
             ideTabs.OpenFile(new FileLeafItem {
                 Path = result.File,
                 Name = System.IO.Path.GetFileName(result.File)
@@ -347,6 +364,14 @@ namespace Debugger.IDE {
                 source = VisualTreeHelper.GetParent(source);
 
             return source as TreeViewItem;
+        }
+
+        public void PublishSearchResult(PluginLib.SearchResult result)
+        {
+            Dispatcher.Invoke(delegate()
+            {
+                searchResults_.Add(result);
+            });
         }
     }
 }

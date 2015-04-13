@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Debugger.IDE
+namespace PluginLib
 {
-    public class SearchResult : BaseClass
+    /// <summary>
+    /// Records to be published to ISearchPublisher
+    /// </summary>
+    public class SearchResult : BasePropertyBound
     {
         string text_;
         string file_;
@@ -19,5 +22,6 @@ namespace Debugger.IDE
         public int Column { get { return column_; } set { column_ = value; OnPropertyChanged("Column"); } }
         public String Text { get { return text_; } set { text_ = value; OnPropertyChanged("Text"); } }
         public String File { get { return file_; } set { file_ = value; OnPropertyChanged("File"); } }
+
     }
 }

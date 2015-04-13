@@ -1,34 +1,28 @@
-﻿using Debugger.IDE;
+﻿using PluginLib;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 
-namespace Debugger.Search
+namespace FileSearch
 {
-    public class FileSearch
+    public class CodeFilesSearch : PluginLib.ISearchService
     {
-        ObservableCollection<SearchResult> results_;
-        Dispatcher dispatch_;
+        public string Name { get { return "Code"; } }
 
-        public FileSearch(Dispatcher dispatch, ObservableCollection<SearchResult> resultsTarget)
+        public void Search(string projectPath, string[] searchTerms, PluginLib.ISearchPublisher publishTo)
         {
-            dispatch_ = dispatch;
-            results_ = resultsTarget;
-        }
-
-        void PushResult(SearchResult aResult)
-        {
-            dispatch_.Invoke(delegate() {
-                results_.Add(aResult);
+            Thread thread = new Thread(delegate()
+            {
+                ScanFolder(projectPath, searchTerms, true, publishTo);
             });
+            thread.Start();
         }
 
-        public void ScanFolder(string aPath, string[] aTerms, bool aScanSubdirs)
+        void ScanFolder(string aPath, string[] aTerms, bool aScanSubdirs, PluginLib.ISearchPublisher publishTo)
         {
             DirectoryInfo info = new DirectoryInfo(aPath);
             if (info.Exists)
@@ -38,21 +32,21 @@ namespace Debugger.Search
                     if (file.Length > 128 * 1024) // limit searching to files less than 128kb
                         continue;
                     string lCaseExt = file.Extension.ToLowerInvariant();
-                    if (!(lCaseExt.Contains("lua") || lCaseExt.Contains("as") || lCaseExt.Contains("xml") || lCaseExt.Contains("txt")))
+                    if (!lCaseExt.Contains("as"))
                         continue;
-                    ScanFile(file.FullName, aTerms);
+                    ScanFile(file.FullName, aTerms, publishTo);
                 }
                 if (aScanSubdirs)
                 {
                     foreach (DirectoryInfo dir in info.GetDirectories())
                     {
-                        ScanFolder(dir.FullName, aTerms, aScanSubdirs);
+                        ScanFolder(dir.FullName, aTerms, aScanSubdirs, publishTo);
                     }
                 }
             }
         }
 
-        void ScanFile(string aFile, string[] aTerms)
+        void ScanFile(string aFile, string[] aTerms, PluginLib.ISearchPublisher publishTo)
         {
             System.IO.StreamReader file = new System.IO.StreamReader(aFile);
             string line;
@@ -64,12 +58,14 @@ namespace Debugger.Search
                     string lCaseLine = line.ToLowerInvariant();
                     if (lCaseLine.Contains(term.ToLowerInvariant()))
                     {
-                        SearchResult result = new SearchResult { 
-                            Column = line.IndexOf(term), 
-                            Line = lineNumber, 
+                        SearchResult result = new SearchResult
+                        {
+                            Column = line.IndexOf(term),
+                            Line = lineNumber,
                             File = aFile,
-                            Text = line.Trim() };
-                        PushResult(result);
+                            Text = line.Trim()
+                        };
+                        publishTo.PublishSearchResult(result);
                     }
                 }
                 ++lineNumber;

@@ -24,6 +24,7 @@ namespace Debugger {
         static MainWindow inst_;
         Timer errTimer;
         ErrorHandler errHandler;
+        PluginManager pluginManager;
 
         public static MainWindow inst() { return inst_; }
 
@@ -31,6 +32,7 @@ namespace Debugger {
             inst_ = this;
             Net.DebugClient client = new Net.DebugClient(new Debugger.Debug.SessionData(""));
             errHandler = new ErrorHandler();
+            pluginManager = new PluginManager("plugins");
             InitializeComponent();
             AppearanceManager.Current.ThemeSource = AppearanceManager.DarkThemeSource;
             AppearanceManager.Current.AccentColor = Colors.DarkOliveGreen;

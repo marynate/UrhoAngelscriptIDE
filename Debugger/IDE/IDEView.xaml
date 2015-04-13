@@ -269,7 +269,7 @@
                             <StackPanel Orientation="Horizontal" Grid.Row="0">
                                 <Label Content="Search" VerticalAlignment="Center" Margin="5"/>
                                 <TextBox Name="txtSearchString" MinWidth="160" PreviewKeyDown="txtSearchString_PreviewKeyDown"/>
-                                <CheckBox Name="chkSearchExplicit" Content="Explicit" Margin="5" VerticalAlignment="Center"/>
+                                <ComboBox Name="comboSearchType" Margin="5" VerticalAlignment="Center"/>
                             </StackPanel>
                             <DataGrid Name="gridSearch" Grid.Row="1" ItemsSource="{Binding SearchResults}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="True">
                                 <DataGrid.Columns>

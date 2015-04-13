@@ -106,7 +106,6 @@
     <Compile Include="IDE\Activity\BuildDumpActivity.cs" />
     <Compile Include="IDE\Activity\CompilerActivity.cs" />
     <Compile Include="IDE\Activity\IDBBuilderActivity.cs" />
-    <Compile Include="IDE\Activity\SearchActivity.cs" />
     <Compile Include="IDE\API\APIDocumentation.cs" />
     <Compile Include="IDE\Dlg\CompErrDlg.xaml.cs">
       <DependentUpon>CompErrDlg.xaml</DependentUpon>
@@ -147,7 +146,6 @@
     <Compile Include="IDE\Intellisense\OverloadProvider.cs" />
     <Compile Include="IDE\Model\Compiling.cs" />
     <Compile Include="IDE\Model\IDEFile.cs" />
-    <Compile Include="IDE\Model\SearchResult.cs" />
     <Compile Include="IDE\Snippets\CodeSnippet.cs" />
     <Compile Include="IDE\Snippets\SnippetDlg.xaml.cs">
       <DependentUpon>SnippetDlg.xaml</DependentUpon>
@@ -165,6 +163,7 @@
     <Compile Include="NewProjectDlg.xaml.cs">
       <DependentUpon>NewProjectDlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PluginManager.cs" />
     <Compile Include="RenameDlg.xaml.cs">
       <DependentUpon>RenameDlg.xaml</DependentUpon>
     </Compile>
@@ -174,8 +173,6 @@
     <Compile Include="Screens\LaunchScreen.xaml.cs">
       <DependentUpon>LaunchScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Search\FileSearch.cs" />
-    <Compile Include="Search\ISearchService.cs" />
     <Compile Include="SettingsDlg.xaml.cs">
       <DependentUpon>SettingsDlg.xaml</DependentUpon>
     </Compile>
@@ -412,6 +409,10 @@
     <ProjectReference Include="..\FirstFloor.ModernUI\FirstFloor.ModernUI\FirstFloor.ModernUI.csproj">
       <Project>{9a653a28-fe46-40e8-a14f-48b0e325165d}</Project>
       <Name>FirstFloor.ModernUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PluginLib\PluginLib.csproj">
+      <Project>{7499686d-9cb2-47e5-ba17-168432507210}</Project>
+      <Name>PluginLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
