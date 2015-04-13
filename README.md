@@ -1,6 +1,8 @@
 # UrhoAngelscriptIDE
 An IDE and Debugger for Angelscript with Urho3D.
 
+![Application Screenshot](help/program_editing.jpg)
+
 ## NuGet dependencies
 
 Newtonsoft Josn.NET, WebSocket4Net, and AvalonEdit
