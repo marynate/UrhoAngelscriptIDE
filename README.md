@@ -1,7 +1,7 @@
 # UrhoAngelscriptIDE
 An IDE and Debugger for Angelscript with Urho3D.
 
-![Application Screenshot](help/program_editing.jpg)
+![Application Screenshot](help/program.jpg)
 
 ## NuGet dependencies
 
