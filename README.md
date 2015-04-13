@@ -14,8 +14,12 @@ FirstFloor.ModernUI included (slightly tweaked)
 * Code editors for the IDE/Debug views need to be consolidated
 * Saving remote files (received from debug server) locally, in the case of debugging the local machine, this is unnecessary as the saving will send the file data over the connection where the debug daemon will save it
 
+# Running the IDE
+
+After compiling the project, your application directory must contain a "bin" directory in the location of the exe. In this directory place your ScriptCompiler.exe and drop a generated ScriptAPI.dox and if available also a "dump.h" header dump to have intellisense ready without having to compile first.
+
 # IDE Functionality
-The IDE is focused on directories instead of projects/solutions. Select the root directory of your project (in the case of Urho this may be.
+The IDE is focused on directories instead of projects/solutions. Select the bin directory of your project, the parent directory will be used as the source tree for the ScriptCompiler's dump.
 
 Presently only, text, XML, and Angelscript (.as) files may be edited. Angelscript files support intellisense. XML assistance is a WIP pending finishing XSD specs for all Urho3D xml file types.
 
