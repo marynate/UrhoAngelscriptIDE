@@ -1,4 +1,5 @@
-﻿using FirstFloor.ModernUI.Windows.Controls;
+﻿using Debugger.IDE.Activity;
+using FirstFloor.ModernUI.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace Debugger.IDE.Dlg
         public CompSuccessDlg()
         {
             InitializeComponent();
+            BuildDumpActivity.CreateDumps();
         }
     }
 }

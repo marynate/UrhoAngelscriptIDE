@@ -12,7 +12,7 @@ namespace Debugger.IDE.Activity {
     public class CompilerActivity {
         public static void Compile(string aToCompile) {
             
-            string dir = System.Reflection.Assembly.GetEntryAssembly().Location.Replace("\\asDevelop.exe", "");
+            string dir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             dir += "\\bin\\ScriptCompiler.exe";
 
             //Thread thread = new Thread(delegate() {

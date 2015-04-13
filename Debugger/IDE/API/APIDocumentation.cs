@@ -70,7 +70,12 @@ namespace Debugger.IDE.API {
         public APIDocumentation() {
             if (root_ == null) {
                 string dir = System.Reflection.Assembly.GetEntryAssembly().Location.Replace("\\asDevelop.exe", "");
-                dir += "\\bin\\documentation.dox";
+                dir += "\\bin\\ScriptAPI.dox";
+
+                if (!System.IO.File.Exists(dir))
+                {
+                    //\todo, do something about the case where it doesn't exist? invoke the script API
+                }
 
                 string[] lines = File.ReadAllLines(dir);
                 APINode current = new APINode { Name = "Root" };

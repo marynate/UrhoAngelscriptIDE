@@ -103,6 +103,7 @@
     <Compile Include="Editor\SearchResultBackgroundRenderer.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="FileOperationWrapper.cs" />
+    <Compile Include="IDE\Activity\BuildDumpActivity.cs" />
     <Compile Include="IDE\Activity\CompilerActivity.cs" />
     <Compile Include="IDE\Activity\IDBBuilderActivity.cs" />
     <Compile Include="IDE\Activity\SearchActivity.cs" />
