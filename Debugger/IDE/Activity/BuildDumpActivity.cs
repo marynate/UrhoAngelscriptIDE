@@ -20,7 +20,7 @@ namespace Debugger.IDE.Activity
                 //Thread thread = new Thread(delegate() {
                 Process pi = new Process();
                 pi.StartInfo.FileName = System.IO.Path.Combine(dir, "ScriptCompiler.exe");
-                pi.StartInfo.Arguments = " -dumpapi " + parentDir + " documentation.dox dump.h";
+                pi.StartInfo.Arguments = " -dumpapi " + parentDir + " ScriptAPI.dox dump.h";
                 pi.StartInfo.UseShellExecute = false;
                 pi.StartInfo.CreateNoWindow = true;
                 pi.StartInfo.WorkingDirectory = dir;

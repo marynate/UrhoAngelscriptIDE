@@ -69,8 +69,8 @@ namespace Debugger.IDE.API {
     public class APIDocumentation : BaseClass {
         public APIDocumentation() {
             if (root_ == null) {
-                string dir = System.Reflection.Assembly.GetEntryAssembly().Location.Replace("\\asDevelop.exe", "");
-                dir += "\\bin\\ScriptAPI.dox";
+                string dir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                dir = System.IO.Path.Combine(System.IO.Path.Combine(dir, "bin"), "ScriptAPI.dox");
 
                 if (!System.IO.File.Exists(dir))
                 {
