@@ -96,13 +96,15 @@ Contains verbatim output from the last compilation action.
 
 ### Error List
 
-If a compilation attempt fails the error log will be parsed and the messages will appear hear. The tab will include a bright red 'X' along with a count of the errors. Each error contains basic summary information and may be double clicked to navigate directly to the location of the error.
+If a compilation attempt fails the error log will be parsed and the messages will appear here. The tab will include a bright red 'X' along with a count of the errors. Each error contains basic summary information and may be double clicked to navigate directly to the location of the error.
 
 Because of how angelscript detects errors, most errors will be reported as being on the line after the error, so investigate everything around the large red squiggly line if in doubt.
 
 ### Search
 
-Performs an asynchronous "find in files" that will report the files in which the terms were found and how many times it was found. Double clicking the record will open the file. Later iterations will replace the flat list with a tree and specific items for each result's location in addition to the parent summary for the file.
+Search functionality is provided by plugins that contain classes implementing ISearchService. Search "plugins" may be selected and will populate the search list with results. Included Search plugins are Code (.as files), XML (.xml files) and All files.
+
+Search plugins feed their results into a ISearchPublisher interface and it is thread safe for them to do such and it is recommended that you run your search in a thread ... don't be Visual Studio, don't freeze the IDE because you're searching.
 
 ## Compiling
 The executable directory must contain a bin folder into which you place the ScriptCompiler executable.
