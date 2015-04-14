@@ -160,12 +160,22 @@ namespace Debugger.IDE {
             if (e.ChangedButton == MouseButton.Middle) {
                 if (sender is TabItem) {
                     IDEEditor editor = (sender as TabItem).Content as IDEEditor;
-                    if (editor.IsDirty) {
-                        MessageBoxResult res = ModernDialog.ShowMessage("Save file changes before closing?", "Close?", MessageBoxButton.YesNoCancel);
-                        if (res == MessageBoxResult.OK) {
-                            editor.Save();
-                        } else if (res == MessageBoxResult.Cancel)
-                            return;
+                    if (editor != null)
+                    {
+                        if (editor.IsDirty)
+                        {
+                            MessageBoxResult res = ModernDialog.ShowMessage("Save file changes before closing?", "Close?", MessageBoxButton.YesNoCancel);
+                            if (res == MessageBoxResult.OK)
+                            {
+                                editor.Save();
+                            }
+                            else if (res == MessageBoxResult.Cancel)
+                                return;
+                        }
+                    }
+                    else
+                    {
+                        //\todo should IFileEditor get a chance?
                     }
                     tabs.Items.Remove(sender);
                 }

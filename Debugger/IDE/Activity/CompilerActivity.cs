@@ -64,7 +64,8 @@ namespace Debugger.IDE.Activity {
                             part += str[firstColon];
                         }
                         string msg = str.Substring(firstColon);
-                        CompileError error = new CompileError {
+                        PluginLib.CompileError error = new PluginLib.CompileError
+                        {
                             File = fileName,
                             Line = line,
                             Message = msg
@@ -109,7 +110,8 @@ namespace Debugger.IDE.Activity {
                     part += str[firstColon];
                 }
                 string msg = str.Substring(firstColon);
-                CompileError error = new CompileError {
+                PluginLib.CompileError error = new PluginLib.CompileError
+                {
                         File = IDEProject.inst().ProjectDir + fileName,
                         Line = line,
                         Message = msg

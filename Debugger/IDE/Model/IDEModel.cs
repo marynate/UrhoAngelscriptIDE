@@ -14,13 +14,13 @@ namespace Debugger.IDE {
         public ObservableCollection<IDEFile> OpenFiles { get { return openFiles_; } }
         public ObservableCollection<IDEFile> AllFiles { get { return knownFiles_; } }
 
-        public ObservableCollection<CompileError> CompilerErrors { get; set; }
+        public ObservableCollection<PluginLib.CompileError> CompilerErrors { get; set; }
         public ObservableCollection<CompileLog> CompilerLog { get; set; }
     }
 
 
     [Serializable]
-    public class IDEProject : NamedBaseClass {
+    public class IDEProject : NamedBaseClass, PluginLib.ICompileErrorPublisher {
         static IDEProject inst_;
 
         public static IDEProject inst() { return inst_; }
@@ -40,7 +40,7 @@ namespace Debugger.IDE {
 
         API.APIDocumentation documentation_;
         Globals intellisenseGlobals_;
-        ObservableCollection<CompileError> errors_ = new ObservableCollection<CompileError>();
+        ObservableCollection<PluginLib.CompileError> errors_ = new ObservableCollection<PluginLib.CompileError>();
         string compileOutput_;
         Docs.DocDatabase docDatabase_;
 
@@ -54,7 +54,7 @@ namespace Debugger.IDE {
         [XmlIgnore]
         public string CompilerOutput { get { return compileOutput_; } set { compileOutput_ = value; OnPropertyChanged("CompilerOutput"); } }
         [XmlIgnore]
-        public ObservableCollection<CompileError> CompileErrors { get { return errors_; } }
+        public ObservableCollection<PluginLib.CompileError> CompileErrors { get { return errors_; } }
 
 
         public string ProjectDir { get { return projectDir_; } set { projectDir_ = value; OnPropertyChanged("ProjectDir"); } }
@@ -106,6 +106,22 @@ namespace Debugger.IDE {
 
         public void destroy() {
             inst_ = null;
+        }
+
+        public void PublishError(PluginLib.CompileError error)
+        {
+            IDEView.inst().Dispatcher.Invoke(delegate()
+            {
+                CompileErrors.Add(error);
+            });
+        }
+
+        public void PushOutput(string text)
+        {
+            IDEView.inst().Dispatcher.Invoke(delegate()
+            {
+                CompilerOutput += text;
+            });
         }
     }
 

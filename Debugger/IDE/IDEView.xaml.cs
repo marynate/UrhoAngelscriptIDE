@@ -253,7 +253,7 @@ namespace Debugger.IDE {
 
         private void errorDoubleClick(object sender, MouseEventArgs args) {
             DataGridRow row = sender as DataGridRow;
-            CompileError result = row.DataContext as CompileError;
+            PluginLib.CompileError result = row.DataContext as PluginLib.CompileError;
             IDEEditor editor = ideTabs.OpenFile(new FileLeafItem {
                 Path = result.File,
                 Name = result.File.Replace(IDEProject.inst().ProjectDir, "")

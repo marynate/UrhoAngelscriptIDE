@@ -110,5 +110,11 @@ namespace Debugger
                 return fileServices_;
             }
         }
+
+        public List<PluginLib.ICompilerService> Compilers {
+            get {
+                return compilers_;
+            }
+        }
     }
 }

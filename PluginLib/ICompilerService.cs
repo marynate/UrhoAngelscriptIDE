@@ -11,5 +11,13 @@ namespace PluginLib
     /// </summary>
     public interface ICompilerService
     {
+        string Name { get; }
+
+        void CompileFile(string file, ICompileErrorPublisher compileErrorPublisher, IErrorPublisher errorPublisher);
+
+        /// <summary>
+        /// Called after all compilation has completed
+        /// </summary>
+        void PostCompile(string file);
     }
 }
