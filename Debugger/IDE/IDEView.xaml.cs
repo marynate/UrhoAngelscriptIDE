@@ -93,14 +93,6 @@ namespace Debugger.IDE {
 
             attrDoc.Tree.DataContext = IDEProject.inst().Documentation.DocumentNode.Children[1];
             scriptDoc.Tree.DataContext = IDEProject.inst().Documentation.DocumentNode.Children[2];
-            //eventsDoc.MiddleMenuBuilder = new Controls.EventSubscriptionDocMenu();
-            //eventsDoc.BottomMenuBuilder = new Controls.EventDataDocMenu();
-            //eventsDoc.Root = IDEProject.inst().Documentation.DocumentNode.Children[0];
-            //attrDoc.Shallow = true;
-            //attrDoc.MiddleMenuBuilder = new Controls.AttrDocMenu();
-            //attrDoc.Root = IDEProject.inst().Documentation.DocumentNode.Children[1];
-            //scriptDoc.Shallow = true;
-            //scriptDoc.Root = IDEProject.inst().Documentation.DocumentNode.Children[2];
         }
 
         public void OnNavigatingFrom(FirstFloor.ModernUI.Windows.Navigation.NavigatingCancelEventArgs e) {
@@ -111,8 +103,17 @@ namespace Debugger.IDE {
         {
             FileBaseItem item = fileTree.SelectedItem as FileBaseItem;
             if (item is FileLeafItem) {
-                if (item.Path.EndsWith(".as") || item.Path.EndsWith(".xml") || item.Path.EndsWith(".csv") || item.Path.EndsWith(".txt"))
+                if (item.Path.EndsWith(".as") || item.Path.EndsWith(".xml") || item.Path.EndsWith(".txt"))
                     ideTabs.OpenFile(item);
+                foreach (PluginLib.IFileEditor editor in PluginManager.inst().FileEditors)
+                {
+                    if (editor.CanEditFile(item.Path, System.IO.Path.GetExtension(item.Path)))
+                    {
+                        //\todo create an editing tab of some type here
+                        ideTabs.OpenFile(item);
+                        break;
+                    }
+                }
             }
         }
 

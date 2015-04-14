@@ -104,5 +104,11 @@ namespace Debugger
                 return searchServices_;
             }
         }
+
+        public List<PluginLib.IFileEditor> FileEditors {
+            get {
+                return fileServices_;
+            }
+        }
     }
 }
