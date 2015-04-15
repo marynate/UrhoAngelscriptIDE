@@ -6,5 +6,6 @@
     <mui:ModernWindow.TitleLinks>
         <mui:Link DisplayName="Develop" Source="/IDE/IDEView.xaml" />
         <mui:Link DisplayName="Debug" Source="/Screens/DebugScreen.xaml" />
+        <mui:Link DisplayName="Plugins" Source="cmd://showPlugins"/>
     </mui:ModernWindow.TitleLinks>
 </mui:ModernWindow>

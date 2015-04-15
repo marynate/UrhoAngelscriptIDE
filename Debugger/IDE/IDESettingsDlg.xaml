@@ -24,6 +24,11 @@
                 <TextBox Name="txtDebugParams" MinWidth="160" Text="{Binding DebugParams}" Margin="5"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
+                <Label Content="Source Tree" VerticalAlignment="Center" Margin="5" MinWidth="85" />
+                <TextBox Name="txtSourceTree" MinWidth="160" Text="{Binding SourceTree}" Margin="5" />
+                <Button Content="Browse" Tag="sourcetree" Click="Button_Click" Style="{StaticResource StyledButton}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
                 <Label Content="Compile File" VerticalAlignment="Center" Margin="5" MinWidth="85"/>
                 <TextBox Name="txtCompileFile" MinWidth="160" Text="{Binding CompilerPath}" Margin="5"/>
                 <Button Content="Browse" Tag="compile" Click="Button_Click" Style="{StaticResource StyledButton}"/>

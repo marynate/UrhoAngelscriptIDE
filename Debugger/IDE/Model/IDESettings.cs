@@ -14,6 +14,7 @@ namespace Debugger.IDE {
         string debugExe_ = "";
         string debugParams_ = "";
         string runParams_ = "";
+        string sourceTree_ = "";
 
         public IDESettings() {
         }
@@ -35,5 +36,6 @@ namespace Debugger.IDE {
         public string RunExe { get { return runExe_; } set { runExe_ = value; OnPropertyChanged("RunExe"); } }
         public string DebugParams { get { return debugParams_; } set { debugParams_ = value; OnPropertyChanged("DebugParams"); } }
         public string RunParams { get { return runParams_; } set { runParams_ = value; OnPropertyChanged("RunParams"); } }
+        public string SourceTree { get { return sourceTree_; } set { sourceTree_ = value; OnPropertyChanged("SourceTree"); } }
     }
 }

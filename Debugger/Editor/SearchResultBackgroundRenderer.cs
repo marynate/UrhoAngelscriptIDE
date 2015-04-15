@@ -43,7 +43,7 @@ namespace Debugger.Editor {
         }
 
         public SearchResultBackgroundRenderer() {
-            markerBrush = Brushes.LightGreen;
+            markerBrush = Brushes.Gold;
             markerPen = new Pen(markerBrush, 1);
         }
 
@@ -81,7 +81,7 @@ namespace Debugger.Editor {
                 geoBuilder.AddSegment(textView, result);
                 Geometry geometry = geoBuilder.CreateGeometry();
                 if (geometry != null) {
-                    drawingContext.DrawGeometry(markerBrush, markerPen, geometry);
+                    //drawingContext.DrawGeometry(Brushes.Fuchsia, markerPen, geometry);
                 }
             }
         }

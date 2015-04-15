@@ -49,11 +49,12 @@ namespace Debugger.IDE {
             } else {
                 editor.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance.GetDefinitionByExtension(item.Path.Substring(item.Path.LastIndexOf('.')));
             }
+
             editor.FontFamily = new FontFamily("Consolas");
             editor.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDCDCCC"));
             editor.TextArea.TextView.BackgroundRenderers.Add(new LineHighlighter());
             editor.TextArea.TextView.BackgroundRenderers.Add(new ErrorLineHighlighter(aItem));
-            SearchPanel.Install(editor.TextArea);
+            Debugger.Editor.SearchPanel.Install(editor);
             editor.TextChanged += editor_TextChanged;
             scanner = new DepthScanner();
             scanner.Process(editor.Text);

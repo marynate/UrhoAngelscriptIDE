@@ -3,23 +3,56 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace UrhoCompilerPlugin
 {
+    /// <summary>
+    /// Compiler for Urho3D
+    /// 
+    /// Uses ScriptCompiler.exe in the bin folder to compile a specific file
+    /// </summary>
     public class UrhoCompiler : PluginLib.ICompilerService
     {
         public string Name { get { return "Urho3D Single File"; } }
+        
+        [DllImport("kernel32.dll")]
+        static extern bool ReadConsoleW(IntPtr hConsoleInput, [Out] byte[]
+           lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead,
+           IntPtr lpReserved);
+
+        static string ReadLine(IntPtr handle)
+        {
+            const int bufferSize = 1024;
+            var buffer = new byte[bufferSize];
+
+            uint charsRead = 0;
+
+            ReadConsoleW(handle, buffer, bufferSize, out charsRead, (IntPtr)0);
+            if (charsRead <= 2)
+                return "";
+            // -2 to remove ending \n\r
+            int nc = ((int)charsRead - 2) * 2;
+            var b = new byte[nc];
+            for (var i = 0; i < nc; i++)
+                b[i] = buffer[i];
+
+            var utf8enc = Encoding.UTF8;
+            var unicodeenc = Encoding.Unicode;
+            return utf8enc.GetString(Encoding.Convert(unicodeenc, utf8enc, b));
+        }
 
         public void CompileFile(string file, PluginLib.ICompileErrorPublisher compileErrorPublisher, PluginLib.IErrorPublisher errorPublisher)
         {
             try
             {
-                string path = System.Reflection.Assembly.GetEntryAssembly().Location;
+                string path = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
                 path = Path.Combine(path, "bin");
                 path = Path.Combine(path, "ScriptCompiler.exe");
-
+                
                 Process pi = new Process();
                 pi.StartInfo.FileName = path;
                 pi.StartInfo.Arguments = file;
@@ -34,7 +67,8 @@ namespace UrhoCompilerPlugin
                 while ((str = pi.StandardOutput.ReadLine()) != null)
                 {
                     compileErrorPublisher.PushOutput(str + "\r\n");
-
+                    if (str.Contains("ERROR: "))
+                        str = str.Replace("ERROR: ", "");
                     if (str.Contains(','))
                     {
                         int firstColon = 0;
@@ -47,7 +81,7 @@ namespace UrhoCompilerPlugin
                                 colonFond = true;
                         }
                         string fileName = str.Substring(0, firstColon);
-
+                
                         string part = "";
                         int line = -1;
                         int column = -1;
@@ -74,20 +108,15 @@ namespace UrhoCompilerPlugin
                             Message = msg
                         };
                         compileErrorPublisher.PublishError(error);
-                        //MainWindow.inst().Dispatcher.Invoke(delegate()
-                        //{
-                        //    IDEProject.inst().CompileErrors.Add(error);
-                        //});
                     }
                 }
-
             } catch (Exception ex)
             {
-                //\todo feed an error service
+                errorPublisher.PublishError(ex);
             }
         }
 
-        public void PostCompile(string file)
+        public void PostCompile(string file, string sourceTree, PluginLib.IErrorPublisher errorPublisher)
         {
             try
             {
@@ -97,7 +126,7 @@ namespace UrhoCompilerPlugin
             } 
             catch (Exception ex)
             {
-
+                errorPublisher.PublishError(ex);
             }
 
         }

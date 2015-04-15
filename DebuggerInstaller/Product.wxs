@@ -39,7 +39,6 @@
         <ComponentGroup Id="ToolsComponents" Directory="BINFOLDER">
             <Component Id="TOOLS" Guid="5f3e3f7c-8b1d-4904-8bf1-9067b108ded2">
                 <File Id="COMPILER" Source="../Debugger/Bin/Debug/Bin/ScriptCompiler.exe" Checksum="yes" />
-                <File Id="TS" Source="../Debugger/Bin/Debug/Bin/ts.exe" Checksum="yes" />
             </Component>
         </ComponentGroup>
 	</Fragment>

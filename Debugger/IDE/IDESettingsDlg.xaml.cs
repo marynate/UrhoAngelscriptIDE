@@ -25,6 +25,7 @@ namespace Debugger.IDE {
             txtDebugParams.DataContext = IDEProject.inst().Settings;
             txtRunExe.DataContext = IDEProject.inst().Settings;
             txtRunParams.DataContext = IDEProject.inst().Settings;
+            txtSourceTree.DataContext = IDEProject.inst().Settings;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
@@ -37,6 +38,8 @@ namespace Debugger.IDE {
                     IDEProject.inst().Settings.DebugExe = dlg.FileName;
                 else if (btn.Tag.Equals("compile"))
                     IDEProject.inst().Settings.CompilerPath = dlg.FileName;
+                else if (btn.Tag.Equals("sourcetree"))
+                    IDEProject.inst().Settings.SourceTree = dlg.FileName;
             }
         }
     }

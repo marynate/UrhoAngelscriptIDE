@@ -1,0 +1,13 @@
+﻿<mui:ModernDialog x:Class="Debugger.Dlg.PluginDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        Title="Installed Plugins" Height="480" Width="640" ResizeMode="NoResize" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid Style="{StaticResource ContentRoot}">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <StackPanel Name="pluginStack" Orientation="Horizontal">
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</mui:ModernDialog>

@@ -116,5 +116,11 @@ namespace Debugger
                 return compilers_;
             }
         }
+
+        public List<PluginInfo> InstalledPlugins {
+            get {
+                return assemblies;
+            }
+        }
     }
 }

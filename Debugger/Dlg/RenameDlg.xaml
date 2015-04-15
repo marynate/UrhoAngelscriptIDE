@@ -1,4 +1,4 @@
-﻿<mui:ModernDialog x:Class="Debugger.RenameDlg"
+﻿<mui:ModernDialog x:Class="Debugger.Dlg.RenameDlg"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"

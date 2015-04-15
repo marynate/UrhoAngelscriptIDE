@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UrhoCompiler.cs" />
+    <Compile Include="UrhoIntellisenseBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PluginLib\PluginLib.csproj">

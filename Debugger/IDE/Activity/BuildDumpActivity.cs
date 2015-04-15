@@ -22,6 +22,11 @@ namespace Debugger.IDE.Activity
             string dir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             dir = System.IO.Path.Combine(dir, "bin");
             string parentDir = System.IO.Directory.GetParent(IDEProject.inst().ProjectDir).ToString();
+
+            // Check for a source tree
+            if (IDEProject.inst().Settings.SourceTree != null && IDEProject.inst().Settings.SourceTree.Length > 0)
+                parentDir = IDEProject.inst().Settings.SourceTree;
+
             Thread thread = new Thread(delegate()
             {
                 //Thread thread = new Thread(delegate() {

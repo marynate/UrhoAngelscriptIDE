@@ -76,7 +76,7 @@
     <Compile Include="Controls\JWrapView.xaml.cs">
       <DependentUpon>JWrapView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ConfirmDlg.xaml.cs">
+    <Compile Include="Dlg\ConfirmDlg.xaml.cs">
       <DependentUpon>ConfirmDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dlg\ErrorDlg.xaml.cs">
@@ -84,6 +84,9 @@
     </Compile>
     <Compile Include="Dlg\InputDlg.xaml.cs">
       <DependentUpon>InputDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dlg\PluginDlg.xaml.cs">
+      <DependentUpon>PluginDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dlg\SettingsDlg.xaml.cs">
       <DependentUpon>SettingsDlg.xaml</DependentUpon>
@@ -104,7 +107,6 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="FileOperationWrapper.cs" />
     <Compile Include="IDE\Activity\BuildDumpActivity.cs" />
-    <Compile Include="IDE\Activity\CompilerActivity.cs" />
     <Compile Include="IDE\Activity\IDBBuilderActivity.cs" />
     <Compile Include="IDE\API\APIDocumentation.cs" />
     <Compile Include="IDE\Dlg\CompErrDlg.xaml.cs">
@@ -160,11 +162,11 @@
     <Compile Include="Debugger\SessionData.cs" />
     <Compile Include="Debugger\WatchValue.cs" />
     <Compile Include="Net\DebugClient.cs" />
-    <Compile Include="NewProjectDlg.xaml.cs">
+    <Compile Include="Dlg\NewProjectDlg.xaml.cs">
       <DependentUpon>NewProjectDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="PluginManager.cs" />
-    <Compile Include="RenameDlg.xaml.cs">
+    <Compile Include="Dlg\RenameDlg.xaml.cs">
       <DependentUpon>RenameDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\DebugScreen.xaml.cs">
@@ -172,9 +174,6 @@
     </Compile>
     <Compile Include="Screens\LaunchScreen.xaml.cs">
       <DependentUpon>LaunchScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SettingsDlg.xaml.cs">
-      <DependentUpon>SettingsDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="StringUtils.cs" />
     <Compile Include="StyledButton.cs" />
@@ -187,7 +186,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ConfirmDlg.xaml">
+    <Page Include="Dlg\ConfirmDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -196,6 +195,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dlg\InputDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dlg\PluginDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -270,11 +273,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NewProjectDlg.xaml">
+    <Page Include="Dlg\NewProjectDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RenameDlg.xaml">
+    <Page Include="Dlg\RenameDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -283,10 +286,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Screens\LaunchScreen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SettingsDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

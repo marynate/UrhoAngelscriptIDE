@@ -10,7 +10,7 @@ namespace UrhoDocsPlugin
     {
         public string GetTabName()
         {
-            throw new NotImplementedException();
+            return "Events";
         }
 
         public object CreateTabContent(string projectPath)

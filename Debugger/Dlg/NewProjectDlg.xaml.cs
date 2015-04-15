@@ -13,24 +13,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Debugger {
+namespace Debugger.Dlg {
     /// <summary>
-    /// Dialog to be used for all (basic) cases of renaming something, such as files and folders
+    /// Interaction logic for NewProjectDlg.xaml
     /// </summary>
-    public partial class RenameDlg : ModernDialog {
-        public static string Show(string name) {
-            RenameDlg dlg = new RenameDlg(name);
-            if (dlg.ShowDialog() == true)
-                return dlg.txtValue.Text.Trim();
-            return "";
-        }
-
-        RenameDlg(string startname) {
+    public partial class NewProjectDlg : ModernDialog {
+        public NewProjectDlg() {
             InitializeComponent();
-            txtMsg.Text = string.Format("Rename {0} to:", startname);
-            txtValue.Text = startname;
-            txtValue.Focus();
-            txtValue.SelectAll();
+
             Buttons = new Button[] {
                 OkButton,
                 CancelButton

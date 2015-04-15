@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="BasePropertyBound.cs" />
     <Compile Include="CompileError.cs" />
+    <Compile Include="IBackgroundService.cs" />
     <Compile Include="ICompileErrorPublisher.cs" />
     <Compile Include="ICompilerService.cs" />
     <Compile Include="IErrorPublisher.cs" />

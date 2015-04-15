@@ -18,6 +18,6 @@ namespace PluginLib
         /// <summary>
         /// Called after all compilation has completed
         /// </summary>
-        void PostCompile(string file);
+        void PostCompile(string file, string sourceTree, IErrorPublisher errorPublisher);
     }
 }

@@ -13,7 +13,7 @@ namespace Debugger {
     /// 
     /// \todo Errors should probably be written to a log
     /// </summary>
-    public class ErrorHandler {
+    public class ErrorHandler : PluginLib.IErrorPublisher {
         static ErrorHandler inst_;
         List<string> messages_ = new List<string>();
 
@@ -40,6 +40,16 @@ namespace Debugger {
 
         public void Error(Exception ex) {
             messages_.Add(ex.Message);
+        }
+
+        public void PublishError(Exception ex)
+        {
+            Error(ex);
+        }
+
+        public void PublishError(string msg)
+        {
+            messages_.Add(msg);
         }
     }
 }

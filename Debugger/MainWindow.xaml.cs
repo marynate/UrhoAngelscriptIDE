@@ -37,7 +37,8 @@ namespace Debugger {
             AppearanceManager.Current.ThemeSource = AppearanceManager.DarkThemeSource;
             AppearanceManager.Current.AccentColor = Colors.DarkOliveGreen;
             ContentSource = new Uri("Screens/LaunchScreen.xaml", UriKind.Relative);
-            LinkNavigator.Commands.Add(new Uri("cmd://showSettings", UriKind.Absolute), new RelayCommand(o => showSettings()));
+
+            LinkNavigator.Commands.Add(new Uri("cmd://showPlugins", UriKind.Absolute), new RelayCommand(o => showPlugins()));
             errTimer = new Timer();
             errTimer.Enabled = true;
             errTimer.AutoReset = true;
@@ -60,8 +61,9 @@ namespace Debugger {
             }
         }
 
-        void showSettings() {
-            SettingsDlg dlg = new SettingsDlg();
+        void showPlugins()
+        {
+            Dlg.PluginDlg dlg = new Dlg.PluginDlg();
             dlg.ShowDialog();
         }
     }

@@ -156,7 +156,7 @@ namespace Debugger.IDE {
             MenuItem item = sender as MenuItem;
             ContextMenu menu = item.CommandParameter as ContextMenu;
             FileBaseItem target = (menu.PlacementTarget as StackPanel).Tag as FileBaseItem;
-            string newName = RenameDlg.Show(target.Name);
+            string newName = Debugger.Dlg.RenameDlg.Show(target.Name);
             if (newName.Length > 0) {
                 try {
                     string dir = System.IO.Path.GetDirectoryName(target.Path);
@@ -170,7 +170,7 @@ namespace Debugger.IDE {
             MenuItem item = sender as MenuItem;
             ContextMenu menu = item.CommandParameter as ContextMenu;
             FileBaseItem target = (menu.PlacementTarget as StackPanel).Tag as FileBaseItem;
-            string newName = RenameDlg.Show(target.Name);
+            string newName = Debugger.Dlg.RenameDlg.Show(target.Name);
             if (newName.Length > 0) {
                 try {
                     string dir = System.IO.Path.GetDirectoryName(target.Path);
@@ -184,7 +184,7 @@ namespace Debugger.IDE {
             MenuItem item = sender as MenuItem;
             ContextMenu menu = item.CommandParameter as ContextMenu;
             FileBaseItem target = (menu.PlacementTarget as StackPanel).Tag as FileBaseItem;
-            if (ConfirmDlg.Show(string.Format("Delete {1} '{0}'?", target.Name, (target is Folder) ? "folder" : "file")) == true) {
+            if (Debugger.Dlg.ConfirmDlg.Show(string.Format("Delete {1} '{0}'?", target.Name, (target is Folder) ? "folder" : "file")) == true) {
                 try {
                     if (target.Parent is Folder)
                         ((Folder)target.Parent).Children.Remove(target);
@@ -278,13 +278,20 @@ namespace Debugger.IDE {
             }
             IDEProject.inst().CompilerOutput = "";
             IDEProject.inst().CompileErrors.Clear();
-            Activity.CompilerActivity.Compile(IDEProject.inst().Settings.CompilerPath);
+            foreach (PluginLib.ICompilerService comp in PluginManager.inst().Compilers)
+            {
+                comp.CompileFile(IDEProject.inst().Settings.CompilerPath, IDEProject.inst(), ErrorHandler.inst());
+            }
+            //Activity.CompilerActivity.Compile(IDEProject.inst().Settings.CompilerPath);
             if (IDEProject.inst().CompileErrors.Count != 0) {
                 Dlg.CompErrDlg dlg = new Dlg.CompErrDlg();
                 dlg.ShowDialog();
             }
-            else
+            
+            if (IDEProject.inst().CompileErrors.Count == 0)
             {
+                foreach (PluginLib.ICompilerService comp in PluginManager.inst().Compilers)
+                    comp.PostCompile(IDEProject.inst().Settings.CompilerPath, IDEProject.inst().Settings.SourceTree, ErrorHandler.inst());
                 Dlg.CompSuccessDlg dlg = new Dlg.CompSuccessDlg();
                 dlg.ShowDialog();
             }
