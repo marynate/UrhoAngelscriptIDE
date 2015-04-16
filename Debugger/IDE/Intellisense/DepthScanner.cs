@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Debugger.IDE.Intellisense {
     
-    //Scans a file and marks the { brace } depth to tell intellisense how many braces it's allowed to go up in looking resolving a name
+    /// <summary>
+    /// Scans a file and marks the { brace } depth 
+    /// Tells intellisense how many braces it's allowed to go up in looking to resolve a name
+    /// </summary>
     public class DepthScanner {
         int[] backing_;
 
@@ -23,6 +26,7 @@ namespace Debugger.IDE.Intellisense {
             int depth = 0;
             for (int i = 0; i < lines.Length; ++i) {
                 backing_[i] = depth;
+                //\todo this isn't terribly accurate, consider RLE packing the depth of each column of a line
                 if (lines[i].Contains('{'))
                     ++depth;
                 else if (lines[i].Contains('}'))

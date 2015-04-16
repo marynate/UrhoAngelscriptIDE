@@ -37,8 +37,8 @@ namespace Debugger.IDE {
             inst_ = this;
             gridSearch.DataContext = this;
             Activity.IDBBuilderActivity.BuildIntellisenseDatabase();
-            
-            foreach (PluginLib.ISearchService searchService in PluginManager.inst().SearchServices)
+
+            foreach (PluginLib.ISearchService searchService in PluginManager.inst().SearchServices.OrderBy(l => l.Name))
                 comboSearchType.Items.Add(searchService.Name);
             comboSearchType.SelectedIndex = 0;
         }

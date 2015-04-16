@@ -18,13 +18,21 @@ namespace Debugger.Docs
             dir = System.IO.Path.GetDirectoryName(dir);
             dir = System.IO.Path.Combine("bin");
             dir = System.IO.Path.Combine("Docs.xml");
-            try
+            if (System.IO.File.Exists(dir))
             {
-                documentation_ = ReadDocDB(dir);
-            } 
-            catch (Exception ex)
+                try
+                {
+                    documentation_ = ReadDocDB(dir);
+                }
+                catch (Exception ex)
+                {
+                    documentation_ = new Dictionary<string, string>();
+                    ErrorHandler.inst().Error(ex);
+                }
+            }
+            else
             {
-                documentation_ = new Dictionary<string,string>();
+                documentation_ = new Dictionary<string, string>();
             }
         }
 

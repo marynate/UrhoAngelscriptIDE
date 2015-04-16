@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Debugger.IDE {
     public class FileBaseItem : NamedBaseClass {
@@ -72,5 +74,45 @@ namespace Debugger.IDE {
     }
 
     public class FileLeafItem : FileBaseItem {
+        protected BitmapImage img;
+        static Dictionary<string, BitmapImage> sourcePool = new Dictionary<string, BitmapImage>();
+
+        public ImageSource FileImage
+        {
+            get
+            {
+                if (img == null)
+                {
+                    string imgFile = "";
+                    string extension = System.IO.Path.GetExtension(Path);
+                    if (extension.Contains("txt"))
+                        imgFile = "text.png";
+                    else if (extension.Contains("as"))
+                        imgFile = "codefile.png";
+                    else if (extension.Contains("xml"))
+                        imgFile = "xmlfile.png";
+                    else if (extension.Contains("png") || extension.Contains("bmp") || extension.Contains("tga") || extension.Contains("jpg"))
+                        imgFile = "image.png";
+                    else
+                        imgFile = "textfile.png"; //generic file?
+                    //first appearance
+                    if (sourcePool.ContainsKey(imgFile))
+                    {
+                        img = sourcePool[imgFile];
+                    }
+                    else
+                    {
+                        //repeated appearance
+                        BitmapImage bmp = new BitmapImage();
+                        bmp.BeginInit();
+                        bmp.UriSource = new Uri(string.Format("pack://application:,,,/asDevelop;component/Images/{0}", imgFile), UriKind.Absolute);
+                        bmp.EndInit();
+                        img = bmp;
+                        sourcePool[imgFile] = bmp;
+                    }
+                }
+                return img;
+            }
+        }
     }
 }

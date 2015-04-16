@@ -72,7 +72,6 @@
     <Compile Include="Controls\AltDocViewer.xaml.cs">
       <DependentUpon>AltDocViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\IDocMenuBuilder.cs" />
     <Compile Include="Controls\JWrapView.xaml.cs">
       <DependentUpon>JWrapView.xaml</DependentUpon>
     </Compile>
@@ -334,7 +333,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\FugueIconsLicense.txt" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="next.png" />
     <EmbeddedResource Include="prev.png" />
@@ -413,6 +414,9 @@
       <Project>{7499686d-9cb2-47e5-ba17-168432507210}</Project>
       <Name>PluginLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ModernUIIconLicense.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

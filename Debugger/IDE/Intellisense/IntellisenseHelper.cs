@@ -8,11 +8,18 @@ using System.Windows.Documents;
 
 namespace Debugger.IDE.Intellisense {
 
-    // Utility functions for making assessments of the current text state in AvalonEdit
-
+    /// <summary>
+    /// Utility functions for making assessments of the current text state in AvalonEdit
+    /// </summary>
     public static class IntellisenseHelper {
         
-        //is the current caret to the right of specific character, = or . typically
+        /// <summary>
+        /// is the current caret to the right of specific character, = or . typically
+        /// </summary>
+        /// <param name="aCharCode">Character we wnat to know if it's on the left</param>
+        /// <param name="doc">the textdocument being scanned</param>
+        /// <param name="offset">caret offset</param>
+        /// <param name="line">current line</param>
         public static bool OnRightSideOf(char aCharCode, TextDocument doc, int offset, int line) {
             int StartLine = doc.Lines[line-1].Offset;
             for (int i = offset; i > StartLine; --i) {
@@ -22,7 +29,10 @@ namespace Debugger.IDE.Intellisense {
             return false;
         }
 
-        //is the current care to the right of a specific word, such as "new"
+        /// <summary>
+        /// is the current care to the right of a specific word, such as "new"
+        /// </summary>
+        /// <param name="aWord">the word that we're checking to see if is to the left</param>
         public static bool OnRighSideOf(string aWord, TextDocument doc, int offset, int line) {
             int StartLine = doc.Lines[line-1].Offset;
             string str = doc.Text.Substring(StartLine, offset);

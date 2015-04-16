@@ -19,6 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSVEditorPlugin", "CSVEdito
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrhoCompilerPlugin", "UrhoCompilerPlugin\UrhoCompilerPlugin.csproj", "{2FFAD6B7-8394-4BD3-85EA-01179A4D8FF8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AB4F52C2-41FC-4CD4-91EE-B9074A1B2652}"
+	ProjectSection(SolutionItems) = preProject
+		License.md = License.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

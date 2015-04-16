@@ -23,6 +23,7 @@ namespace Debugger.Screens {
             Net.DebugClient client = new Net.DebugClient(new Debugger.Debug.SessionData(txtAddr.Text));
             foreach (string str in UserData.inst().RecentFiles) {
                 Button tb = new Button { Content = str, Tag = str };
+                tb.Style = this.FindResource("StyledButton") as Style;
                 recentFiles.Children.Add(tb);
                 tb.Click += tb_Click;
             }

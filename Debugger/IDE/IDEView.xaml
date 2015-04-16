@@ -119,7 +119,7 @@
                                                 <MenuItem Header="Delete" Click="onDeleteFile" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
                                             </ContextMenu>
                                         </StackPanel.ContextMenu>
-                                        <Image MaxWidth="24" MaxHeight="24" Source="{StaticResource FileImage}" />
+                                        <Image MaxWidth="24" MaxHeight="24" Source="{Binding FileImage}" />
                                         <TextBlock Text="{Binding Path=Name}"  Foreground="{DynamicResource ButtonText}"/>
                                     </StackPanel>
                                 </DataTemplate>
