@@ -278,11 +278,29 @@ namespace Debugger.IDE {
             }
             IDEProject.inst().CompilerOutput = "";
             IDEProject.inst().CompileErrors.Clear();
-            foreach (PluginLib.ICompilerService comp in PluginManager.inst().Compilers)
+            if (IDEProject.inst().Settings.Compiler != null && IDEProject.inst().Settings.Compiler.Length > 0)
             {
-                comp.CompileFile(IDEProject.inst().Settings.CompilerPath, IDEProject.inst(), ErrorHandler.inst());
+                PluginLib.ICompilerService comp = PluginManager.inst().Compilers.FirstOrDefault(c => c.Name.Equals(IDEProject.inst().Settings.Compiler));
+                if (comp != null)
+                    comp.CompileFile(IDEProject.inst().Settings.CompilerPath, IDEProject.inst(), ErrorHandler.inst());
+                else
+                {
+                    ModernDialog.ShowMessage(String.Format("Unable to find compiler: \"{0}\"", IDEProject.inst().Settings.Compiler), "Error", MessageBoxButton.OK);
+                    return;
+                }
             }
-            //Activity.CompilerActivity.Compile(IDEProject.inst().Settings.CompilerPath);
+            else
+            {
+                PluginLib.ICompilerService comp = PluginManager.inst().Compilers.FirstOrDefault();
+                if (comp != null)
+                    comp.CompileFile(IDEProject.inst().Settings.CompilerPath, IDEProject.inst(), ErrorHandler.inst());
+                else
+                {
+                    ModernDialog.ShowMessage("No compiler plugins are installed", "Error", MessageBoxButton.OK);
+                    return;
+                }
+            }
+
             if (IDEProject.inst().CompileErrors.Count != 0) {
                 Dlg.CompErrDlg dlg = new Dlg.CompErrDlg();
                 dlg.ShowDialog();

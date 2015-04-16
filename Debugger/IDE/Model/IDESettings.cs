@@ -9,7 +9,7 @@ namespace Debugger.IDE {
     public class IDESettings : BaseClass {
         string projectPath_ = "";
         string compilerPath_ = "";
-        string compileArgs_ = "";
+        string compiler_ = ""; //The compiler plugin selected, defaults to first detected
         string runExe_ = "";
         string debugExe_ = "";
         string debugParams_ = "";
@@ -37,5 +37,6 @@ namespace Debugger.IDE {
         public string DebugParams { get { return debugParams_; } set { debugParams_ = value; OnPropertyChanged("DebugParams"); } }
         public string RunParams { get { return runParams_; } set { runParams_ = value; OnPropertyChanged("RunParams"); } }
         public string SourceTree { get { return sourceTree_; } set { sourceTree_ = value; OnPropertyChanged("SourceTree"); } }
+        public string Compiler { get { return compiler_; } set { compiler_ = value; OnPropertyChanged("Compiler"); } }
     }
 }

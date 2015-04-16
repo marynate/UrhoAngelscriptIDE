@@ -1,6 +1,7 @@
 ﻿using FirstFloor.ModernUI.Windows.Controls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,20 @@ namespace Debugger.IDE {
     /// Interaction logic for IDESettingsDlg.xaml
     /// </summary>
     public partial class IDESettingsDlg : ModernDialog {
+        public class Compiler : BaseClass {
+            string name_;
+            string value_;
+
+            public string Name { get { return name_; } set { name_= value; OnPropertyChanged("Name"); } }
+            public string Value { get { return value_; } set { value_ = value; OnPropertyChanged("Value"); } }
+        }
+
+        ObservableCollection<Compiler> compilers_ = new ObservableCollection<Compiler>();
+
         public IDESettingsDlg() {
+            foreach (PluginLib.ICompilerService compiler in PluginManager.inst().Compilers)
+                compilers_.Add(new Compiler { Name = compiler.Name, Value = compiler.Name });
+
             InitializeComponent();
             txtCompileFile.DataContext = IDEProject.inst().Settings;
             txtDebugExe.DataContext = IDEProject.inst().Settings;
@@ -26,6 +40,8 @@ namespace Debugger.IDE {
             txtRunExe.DataContext = IDEProject.inst().Settings;
             txtRunParams.DataContext = IDEProject.inst().Settings;
             txtSourceTree.DataContext = IDEProject.inst().Settings;
+            comboCompile.ItemsSource = compilers_;
+            comboCompile.DataContext = IDEProject.inst().Settings;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {

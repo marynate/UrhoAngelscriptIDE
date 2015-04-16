@@ -77,10 +77,22 @@ namespace Debugger.IDE.Intellisense {
         }
     }
 
+    public enum PropertyAccess
+    {
+        Public,
+        Protected,
+        Readonly
+    }
+
     public class PropertyCompletionData : BaseCompletionData {
         TypeInfo classType_;
 
-        public PropertyCompletionData(TypeInfo aType, string desc, bool aReadOnly = false) : base(aReadOnly ? "roproperty.png" : "property.png", desc, aType.Name) {
+        public PropertyCompletionData(TypeInfo aType, string desc, PropertyAccess aPropertyAccess = PropertyAccess.Public)
+            : base(aPropertyAccess == PropertyAccess.Readonly ? 
+                "roproperty.png" : 
+                (aPropertyAccess == PropertyAccess.Protected ? "proproperty.png" : "property.png"), 
+                desc, aType.Name)
+        {
             classType_ = aType;
         }
     }

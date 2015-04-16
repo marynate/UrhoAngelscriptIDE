@@ -15,6 +15,7 @@ namespace Debugger.IDE {
     public class PropInfo : PossiblyIncomplete {
         public string Name { get; set; }
         public bool ReadOnly { get; set; }
+        public bool Protected { get; set; }
         public bool IsReference { get; set; }
         public TypeInfo Container { get; set; } //only relevant to the master class list
         public TypeInfo Type { get; set; }
@@ -24,6 +25,8 @@ namespace Debugger.IDE {
             get {
                 if (ReadOnly)
                     return "/Images/all/roproperty.png";
+                else if (Protected)
+                    return "/Images/all/proproperty.png";
                 return "/Images/all/property.png";
             }
         }
@@ -47,6 +50,7 @@ namespace Debugger.IDE {
             BaseTypes = new List<TypeInfo>();
             Functions = new List<FunctionInfo>();
             ReadonlyProperties = new List<string>();
+            ProtectedProperties = new List<string>();
             IsComplete = true; //default we'll assume complete
             IsPrimitive = false;
         }
@@ -107,13 +111,14 @@ namespace Debugger.IDE {
         public string Name { get; set; }
         public Dictionary<string, TypeInfo> Properties { get; private set; }
         public List<string> ReadonlyProperties { get; private set; }
+        public List<string> ProtectedProperties { get; private set; }
         public List<FunctionInfo> Functions { get; private set; }
 
         public List<object> PropertyUI {
             get {
                 List<object> ret = new List<object>();
                 foreach (string key in Properties.Keys)
-                    ret.Add(new PropInfo { Name = key, Type = Properties[key], ReadOnly = ReadonlyProperties.Contains(key) });
+                    ret.Add(new PropInfo { Name = key, Type = Properties[key], ReadOnly = ReadonlyProperties.Contains(key), Protected = ProtectedProperties.Contains(key) });
                 foreach (FunctionInfo f in Functions)
                     ret.Add(f);
                 return ret;
@@ -315,6 +320,7 @@ namespace Debugger.IDE {
 
             bool inprops = false;
             bool nextReadOnly = false;
+            bool nextProtected = false;
             while ((line = rdr.ReadLine()) != null) {
                 if (line.Length == 0) //empty line
                     continue;
@@ -325,6 +331,9 @@ namespace Debugger.IDE {
                     return;
                 } else if (line.StartsWith("/* readonly */")) {
                     nextReadOnly = true;
+                    continue;
+                } else if (line.StartsWith("/* protected */")) {
+                    nextProtected = true;
                     continue;
                 } else if (line.StartsWith("/*")) {
                     continue;
@@ -342,6 +351,8 @@ namespace Debugger.IDE {
                         classInfo.Properties[parts[1]] = ti;
                         if (nextReadOnly)
                             classInfo.ReadonlyProperties.Add(parts[1]);
+                        else if (nextProtected)
+                            classInfo.ProtectedProperties.Add(parts[1]);
                     } else {
                         string pname = parts[0].EndsWith("@") ? parts[0].Substring(0, parts[0].Length - 1) : parts[0]; //handle
                         TypeInfo pType = null;
@@ -353,12 +364,16 @@ namespace Debugger.IDE {
                         classInfo.Properties[parts[1]] = pType;
                         if (nextReadOnly)
                             classInfo.ReadonlyProperties.Add(parts[1]);
+                        else if (nextProtected)
+                            classInfo.ProtectedProperties.Add(parts[1]);
                     }
                     nextReadOnly = false;
+                    nextProtected = false;
 
                 } else { //function
-                    nextReadOnly = false;
                     classInfo.Functions.Add(_parseFunction(line, globals));
+                    nextReadOnly = false;
+                    nextProtected = false;
                 }
             }
         }

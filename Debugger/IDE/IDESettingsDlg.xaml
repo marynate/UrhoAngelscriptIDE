@@ -33,6 +33,10 @@
                 <TextBox Name="txtCompileFile" MinWidth="160" Text="{Binding CompilerPath}" Margin="5"/>
                 <Button Content="Browse" Tag="compile" Click="Button_Click" Style="{StaticResource StyledButton}"/>
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Compiler" VerticalAlignment="Center" Margin="5" MinWidth="85"/>
+                <ComboBox Name="comboCompile" MinWidth="160" SelectedValue="{Binding Compiler}" DisplayMemberPath="Name" SelectedValuePath="Value" Margin="5"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </mui:ModernDialog>

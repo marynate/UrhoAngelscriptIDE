@@ -238,7 +238,9 @@ namespace Debugger.IDE {
                         }
                     }
                 }
-                catch (Exception ex) { }
+                catch (Exception ex) { 
+                    //deliberately swallow any exceptions here
+                }
             }
         }
 
@@ -368,7 +370,11 @@ namespace Debugger.IDE {
                     IList<ICompletionData> data = currentComp.CompletionList.CompletionData;
                     if (!functionsOnly) {
                         foreach (string str in ti.Properties.Keys)
-                            data.Add(new PropertyCompletionData(ti.Properties[str], str, ti.ReadonlyProperties.Contains(str)));
+                        { 
+                            data.Add(new PropertyCompletionData(ti.Properties[str], str, 
+                                ti.ReadonlyProperties.Contains(str) ? PropertyAccess.Readonly : 
+                                (ti.ProtectedProperties.Contains(str) ? PropertyAccess.Protected : PropertyAccess.Public)));
+                        }
                     }
                     foreach (FunctionInfo fi in ti.Functions)
                         data.Add(new FunctionCompletionData(fi));
