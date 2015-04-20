@@ -44,6 +44,7 @@ namespace Debugger.Editor {
             aModelData.PropertyChanged += aModelData_PropertyChanged;
 
             editor.MouseHover += editor_MouseHover;
+            editor.TextArea.MouseWheel += editor_MouseWheel;
             t = new Timer();
             t.Interval = 250;
             t.Elapsed += t_Elapsed;
@@ -105,6 +106,14 @@ namespace Debugger.Editor {
                         window.Show();
                     }
                 }
+                e.Handled = true;
+            }
+        }
+
+        void editor_MouseWheel(object sender, MouseWheelEventArgs e) {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) {
+                var newFontSize = editor.TextArea.FontSize + e.Delta / 50;
+                editor.TextArea.FontSize = Math.Max(1, newFontSize);
                 e.Handled = true;
             }
         }

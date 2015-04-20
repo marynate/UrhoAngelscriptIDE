@@ -59,6 +59,7 @@ namespace Debugger.IDE {
             scanner = new DepthScanner();
             scanner.Process(editor.Text);
             editor.MouseHover += editor_MouseHover;
+            editor.TextArea.MouseWheel += editor_MouseWheel;
             editor.KeyUp += editor_KeyUp;
 
             editor.ContextMenu = new ContextMenu();
@@ -241,6 +242,14 @@ namespace Debugger.IDE {
                 catch (Exception ex) { 
                     //deliberately swallow any exceptions here
                 }
+            }
+        }
+
+        void editor_MouseWheel(object sender, MouseWheelEventArgs e) {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) {
+                var newFontSize = editor.TextArea.FontSize + e.Delta / 50;
+                editor.TextArea.FontSize = Math.Max(1, newFontSize);
+                e.Handled = true;
             }
         }
 
