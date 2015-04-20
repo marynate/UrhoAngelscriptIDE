@@ -45,6 +45,7 @@
     <Compile Include="ICompileErrorPublisher.cs" />
     <Compile Include="ICompilerService.cs" />
     <Compile Include="IErrorPublisher.cs" />
+    <Compile Include="IExternalControlData.cs" />
     <Compile Include="IFileEditor.cs" />
     <Compile Include="IInfoTab.cs" />
     <Compile Include="ISearchPublisher.cs" />

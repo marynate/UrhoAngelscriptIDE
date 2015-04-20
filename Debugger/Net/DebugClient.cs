@@ -122,10 +122,7 @@ namespace Debugger.Net {
         void _ReceiveMsg(object o, MessageReceivedEventArgs args) {
             try {
                 string msg = args.Message.Substring(0, 4).ToLower();
-                string[] parts = args.Message.Split(' ');/*Regex.Matches(msg, @"[\""].+?[\""]|[^ ]+")
-                    .Cast<Match>()
-                    .Select(m => m.Value)
-                    .ToArray();*/
+                string[] parts = args.Message.Split(' ');
 
                 if (VerboseLog) { //if vebose logging then send all messages
                     MainWindow.inst().Dispatcher.Invoke(delegate() {
@@ -133,32 +130,30 @@ namespace Debugger.Net {
                     });
                 }
 
-                if (msg.Equals("varv")) {
+                if (msg.Equals("varv")) { //Variable Value message
                     //TODO
                     MainWindow.inst().Dispatcher.Invoke(delegate() {
                         session_.Log.Add(new LogMessage { Message = args.Message, MsgType = MessageType.Data });
                     });
-                } else if (msg.Equals("reqv")) {
+                } else if (msg.Equals("reqv")) { // Request Variable Message
                     string varName = parts[1];
                     string varValue = parts[2];
                     //TODO
-                } else if (msg.Equals("locv")) {
+                } else if (msg.Equals("locv")) { // Local Stack Values Message
                     string code = args.Message.Substring(5);
                     JArray array = JArray.Parse(code);
                     MainWindow.inst().Dispatcher.Invoke(delegate() {
-                        SessionData.inst().LocalData = new Json.JWrapper("Stack Level ", array);
-                        //Screens.DebugScreen.inst().LocalsTree.DataContext = null;
+                        SessionData.inst().LocalData = new Json.JWrapper("", array);
                         Screens.DebugScreen.inst().LocalsTree.DataContext = SessionData.inst().LocalData;
                     });
-                } else if (msg.Equals("glov")) {
+                } else if (msg.Equals("glov")) { // Global Variables Message
                     string code = args.Message.Substring(5).Replace("1.#INF","\"1.#INF\"");
                     JArray array = JArray.Parse(code);
                     MainWindow.inst().Dispatcher.Invoke(delegate() {
                         SessionData.inst().GlobalData = new Json.JWrapper("Globals", array);
-                        //Screens.DebugScreen.inst().GlobalsTree.DataContext = null;
                         Screens.DebugScreen.inst().GlobalTree.DataContext = SessionData.inst().GlobalData;
                     });
-                } else if (msg.Equals("this")) {
+                } else if (msg.Equals("this")) { // "This" Object data
                     int stackDepth = int.Parse(parts[1]);
                     string code = JoinStringsWith(parts, 2, " ");
                     JObject array = JObject.Parse(code);
@@ -168,7 +163,7 @@ namespace Debugger.Net {
                         Screens.DebugScreen.inst().ThisTree.DataContext = SessionData.inst().ThisData;
                     });
                     //TODO
-                } else if (msg.Equals("modl")) {
+                } else if (msg.Equals("modl")) { // Script Modules Message
                     JArray array = JArray.Parse(args.Message.Substring(5));
                     for (int i = 0; i < array.Count; ++i) {
                         if (array[i].Type == JTokenType.String) {
@@ -182,9 +177,9 @@ namespace Debugger.Net {
                             });
                         }
                     }
-                } else if (msg.Equals("ctxl")) {
+                } else if (msg.Equals("ctxl")) { // Script Context messages, irrelevant in simple AS implementations
 
-                } else if (msg.Equals("stck")) {
+                } else if (msg.Equals("stck")) { // Call stack Message
                     if (parts[1].StartsWith("[")) {
                         //TODO
                         string code = args.Message.Substring(5);
@@ -218,13 +213,15 @@ namespace Debugger.Net {
                             });
                         });
                     }
-                } else if (msg.Equals("scls")) {
+                } else if (msg.Equals("scls")) { // List of "Script Sections"/files
                     JArray array = JArray.Parse(args.Message.Substring(5));
 
                     foreach (JObject obj in array.Children<JObject>()) {
                         int id = obj.Property("id").Value.ToObject<int>();
                         string module = obj.Property("mod").Value.ToString();
                         string name = obj.Property("name").Value.ToString();
+                        if (module.Length == 0)
+                            continue;
                         MainWindow.inst().Dispatcher.Invoke(delegate() {
                             FileData fd = session_.Files.FirstOrDefault(file => file.SectionName.Equals(name));
                             if (fd == null) {
@@ -234,12 +231,12 @@ namespace Debugger.Net {
                                     SectionID = id
                                 });
                             } else {
-                                fd.SectionID = id;
+                                fd.SectionID = id; // Faciliates "lost" connection
                             }
                         });
                     }
 
-                } else if (msg.Equals("file")) {
+                } else if (msg.Equals("file")) { // Script code sent to us
                     int sectionID = int.Parse(parts[1]);
                     int len = sectionID.ToString().Length + 6;
                     string data = args.Message.Substring(len);
@@ -249,7 +246,7 @@ namespace Debugger.Net {
                         file.Code = data;
                     //??is there an else case? should presumably know the section ahead of time
 
-                } else if (msg.Equals("bset")) {
+                } else if (msg.Equals("bset")) { // Someone has set a breakpoint
                     int sectionID = int.Parse(parts[1]);
                     int line = int.Parse(parts[2]);
 
@@ -266,7 +263,7 @@ namespace Debugger.Net {
                     } else {
                         Debugger.Debug.FileData fd = new FileData { SectionID = sectionID };
                     }
-                } else if (msg.Equals("brem")) {
+                } else if (msg.Equals("brem")) { // Someone has removed a breakpoint
                     int sectionID = int.Parse(parts[1]);
                     int line = int.Parse(parts[2]);
                     Debugger.Debug.FileData file = session_.Files.FirstOrDefault(f => f.SectionID == sectionID);
@@ -276,7 +273,7 @@ namespace Debugger.Net {
                             breakpoint.Active = false;
                         }
                     }
-                } else if (msg.Equals("hitl")) {
+                } else if (msg.Equals("hitl")) { // "HitLine" current line position
                     session_.IsDebugging = true;
                     int sectionId = int.Parse(parts[1]);
                     int line = int.Parse(parts[2]);
@@ -286,11 +283,11 @@ namespace Debugger.Net {
                         Screens.DebugScreen.inst().EditorTabs.OpenFile(sectionId, line);
                     });
 
-                } else if (msg.Equals("cont")) {
+                } else if (msg.Equals("cont")) { // Execution resumed by someone
                 } else if (msg.Equals("secm")) { //A file has been changed remotely, send a request for it
                     int sectionid = int.Parse(parts[1]);
                     socket_.Send(string.Format("GETF {0}", sectionid));
-                } else if (msg.Equals("logw")) {
+                } else if (msg.Equals("logw")) { // Log Warning
                     string m = args.Message.Substring(5);
                     MainWindow.inst().Dispatcher.Invoke(delegate() {
                         session_.Log.Add(new LogMessage {
@@ -298,7 +295,7 @@ namespace Debugger.Net {
                             Message = JoinStringsWith(parts, 1, " ")
                         });
                     });
-                } else if (msg.Equals("loge")) {
+                } else if (msg.Equals("loge")) { // Log Error
                     string m = args.Message.Substring(5);
                     MainWindow.inst().Dispatcher.Invoke(delegate() {
                         session_.Log.Add(new LogMessage {
@@ -306,7 +303,7 @@ namespace Debugger.Net {
                             Message = JoinStringsWith(parts, 1, " ")
                         });
                     });
-                } else if (msg.Equals("logi")) {
+                } else if (msg.Equals("logi")) { // Log Info
                     string m = args.Message.Substring(5);
                     MainWindow.inst().Dispatcher.Invoke(delegate() {
                         session_.Log.Add(new LogMessage {
@@ -314,7 +311,7 @@ namespace Debugger.Net {
                             Message = JoinStringsWith(parts, 1, " ")
                         });
                     });
-                } else if (msg.Equals("rstr")) {
+                } else if (msg.Equals("rstr")) { // A restart message
                     //TODO
                 } else {
                     //Unknown msg
@@ -376,6 +373,11 @@ namespace Debugger.Net {
                 socket_.Send(string.Format("BRKS {0} {1}", sectionID, line));
             else
                 socket_.Send(string.Format("BRKR {0} {1}", sectionID, line));
+        }
+
+        public void SetStackValue(string path, string valueStr)
+        {
+            socket_.Send(string.Format("SETS {0} {1}", path, valueStr));
         }
 
         public void Save(FileData aData) {

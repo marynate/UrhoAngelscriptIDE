@@ -102,8 +102,10 @@ namespace Debugger.IDE {
         private void fileTree_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             FileBaseItem item = fileTree.SelectedItem as FileBaseItem;
-            if (item is FileLeafItem) {
-                if (item.Path.EndsWith(".as") || item.Path.EndsWith(".xml") || item.Path.EndsWith(".txt"))
+            if (sender is TreeViewItem && ((TreeViewItem)sender).DataContext is FileLeafItem)
+            {
+                e.Handled = true;
+                if (item.Path.EndsWith(".as") || item.Path.EndsWith(".txt"))
                     ideTabs.OpenFile(item);
                 foreach (PluginLib.IFileEditor editor in PluginManager.inst().FileEditors)
                 {

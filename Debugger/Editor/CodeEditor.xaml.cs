@@ -51,9 +51,16 @@ namespace Debugger.Editor {
         }
 
         void t_Elapsed(object sender, ElapsedEventArgs e) {
-            MainWindow.inst().Dispatcher.Invoke(delegate() {
-                bpMargin.InvalidateVisual();
-            });
+            try {
+                MainWindow.inst().Dispatcher.Invoke(delegate()
+                {
+                    bpMargin.InvalidateVisual();
+                });
+            }
+            catch (Exception ex)
+            {
+                // Swallow the exception, it's probably just a shut down issue
+            }
         }
 
         public static ICommand SetBPCommand = new RoutedCommand();
@@ -66,20 +73,35 @@ namespace Debugger.Editor {
                 {
                     Json.JWrapper wrapper = null;
 
-                    //This -> Stack -> Globals
+                    // Try to find it in "this"
+                    string[] words = wordHovered.Split('.');
                     if (Debugger.Debug.SessionData.inst().ThisData != null)
-                        wrapper = Debugger.Debug.SessionData.inst().ThisData.ContainsKey(wordHovered);
-                    if (wrapper == null)
-                        wrapper = Debugger.Debug.SessionData.inst().LocalData.ContainsKey(wordHovered);
-                    if (wrapper == null && Debugger.Debug.SessionData.inst().GlobalData != null)
-                        wrapper = Debugger.Debug.SessionData.inst().GlobalData.ContainsKey(wordHovered);
+                        wrapper = Debugger.Debug.SessionData.inst().ThisData.ResolveDotPath(words);
+                    if (wrapper != null && wrapper.Parent == null)
+                        wrapper = null; //reset to null so other checks have an opportunity
 
-                    if (wrapper != null) {
+                    // Check the Stack
+                    if (wrapper == null)
+                        wrapper = Debugger.Debug.SessionData.inst().LocalData.ResolveDotPath(words);
+                    if (wrapper != null && wrapper.Parent == null)
+                        wrapper = null; //reset to null so globals can have a chance
+                    
+                    // Check the globals
+                    if (wrapper == null && Debugger.Debug.SessionData.inst().GlobalData != null)
+                        wrapper = Debugger.Debug.SessionData.inst().GlobalData.ResolveDotPath(words);
+
+                    // If something has been found then show it in AvalonEdit's "Insight Window"
+                    if (wrapper != null && wrapper.Parent != null) { //null check prevents display of all stack levels
                         InsightWindow window = new InsightWindow(editor.TextArea);
-                        window.Content = new Controls.JWrapView() { DataContext = wrapper };
-                        window.MinHeight = 160;
+                        window.Background = new SolidColorBrush(Colors.Black);
+                        if (wrapper is Json.JLeaf)
+                            window.Content = new Label { Content = ((Json.JLeaf)wrapper).Value };
+                        else
+                            window.Content = new Controls.JWrapView() { DataContext = wrapper };
                         window.MaxHeight = 240;
-                        window.SizeToContent = SizeToContent.Width;
+                        window.SizeToContent = SizeToContent.WidthAndHeight;
+                        window.Left = Mouse.GetPosition(this).X;
+                        window.Top = Mouse.GetPosition(this).X;
                         window.Show();
                     }
                 }

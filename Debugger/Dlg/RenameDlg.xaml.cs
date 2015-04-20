@@ -29,14 +29,14 @@ namespace Debugger.Dlg {
             InitializeComponent();
             txtMsg.Text = string.Format("Rename {0} to:", startname);
             txtValue.Text = startname;
-            txtValue.Focus();
-            txtValue.SelectAll();
             Buttons = new Button[] {
                 OkButton,
                 CancelButton
             };
             foreach (Button btn in Buttons)
                 btn.Style = FindResource("StyledButton") as Style;
+            txtValue.Focus();
+            txtValue.SelectAll();
         }
     }
 }

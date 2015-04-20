@@ -102,8 +102,6 @@ namespace Debugger.Debug {
                 if (watch.Variable.Equals(aWatch.Variable))
                     return;
             }
-            if (aWatch.Evaluate(LocalData)) {
-            }
             Watches.Add(aWatch);
         }
 

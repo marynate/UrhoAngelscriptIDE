@@ -19,7 +19,7 @@ namespace Debugger.Json {
         }
 
 
-        JWrapper Parent = null;
+        public new JWrapper Parent = null;
         protected JWrapper(string name) {
             Name = name;
         }
@@ -40,20 +40,24 @@ namespace Debugger.Json {
 
         public string Name {get; set;}
 
-        public string GetDotPath() {
+        public virtual string GetDotPath() {
             string ret = "";
-            JWrapper cur = this;
-            while (cur.Parent != null && cur.Parent.Parent != null) {
-                ret = cur.Name + (ret.Length > 0 ? "." : "") + ret;
-                cur = cur.Parent;
+
+            int voidResult = 0;
+            // Cludge int parse to check for "stack level," is a parseable integer name is ever valid?
+            if (Parent != null && !int.TryParse(Parent.Name, out voidResult))
+            {
+                string parentName = Parent.GetDotPath();
+                if (parentName.Length > 0)
+                    return Parent.GetDotPath() + "." + Name;
             }
-            return ret;
+            return Name;
         }
 
         public string GetTildePath() {
             string ret = "";
             JWrapper cur = this;
-            while (cur.Parent != null && cur.Parent.Parent != null) {
+            while (cur.Parent != null) {
                 ret = cur.Name + (ret.Length > 0 ? "~" : "") + ret;
                 cur = cur.Parent;
             }
@@ -62,20 +66,24 @@ namespace Debugger.Json {
 
         public JWrapper ResolveDotPath(params string[] words) {
             foreach (JWrapper child in Children) {
-                if (Parent == null) { //we're a root holder
-                    JWrapper r = child.ResolveDotPath(words);
-                    if (r != null)
-                        return r;
-                } else if (child.Name.Equals(words[0])) {
+                // Cludge for script engine registration vs asPEEK registration
+                //\todo Determine most appropriate means of registering objects in Urho3D asPEEK implementation
+                //Script types are registered differently than types are named in C++
+                if (child.Name.Equals(words[0]) || (child.Name.EndsWith("_") && child.Name.Replace("_","").Equals(words[0]))) {
                     if (words.Length > 1) {
                         JWrapper r = child.ResolveDotPath(SubArray(words, 1, words.Length-1));
                         if (r != null)
                             return r;
                     } else
                         return child;
+                } else if (Parent == null) { //we're a root holder, applies to "Stack Level nodes"
+                    JWrapper r = child.ResolveDotPath(words);
+                    if (r != null)
+                        return r;
                 }
             }
-            if (this.Name.Equals(words[0]))
+            // Cludge for script engine registration vs asPEEK registration
+            if (Name.Equals(words[0]) || (Name.EndsWith("_") && Name.Replace("_","").Equals(words[0])))
                 return this;
             return null;
         }

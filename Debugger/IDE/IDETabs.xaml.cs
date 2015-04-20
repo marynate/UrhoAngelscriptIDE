@@ -38,7 +38,7 @@ namespace Debugger.IDE {
         }
 
         public IDEEditor OpenFile(FileBaseItem aFile) {
-            if (aFile.Name.Contains(".as"))
+            if (aFile.Name.Contains(".as") || aFile.Name.Contains(".txt"))
             {
                 foreach (TabItem item in tabs.Items)
                 {
@@ -84,17 +84,17 @@ namespace Debugger.IDE {
             {
                 foreach (PluginLib.IFileEditor editor in PluginManager.inst().FileEditors)
                 {
-                    if (editor.CanEditFile(aFile.Name, System.IO.Path.GetExtension(aFile.Name)))
+                    if (editor.CanEditFile(aFile.Path, System.IO.Path.GetExtension(aFile.Name)))
                     {
                         object ud = null;
-                        object obj = editor.CreateEditorContent(aFile.Path, out ud);
+                        PluginLib.IExternalControlData externalControl = editor.CreateEditorContent(aFile.Path);
 
                         Grid grid = new Grid();
                         grid.ColumnDefinitions.Add(new ColumnDefinition());
                         grid.ColumnDefinitions.Add(new ColumnDefinition());
 
                         TextBlock txt = new TextBlock { Text = aFile.Name };
-                        //txt.DataContext = ideEditor.changeChecker;
+                        txt.DataContext = externalControl;
                         txt.Foreground = FindResource("ButtonText") as Brush;
                         txt.Style = FindResource("IDETabHeader") as Style;
 
@@ -112,11 +112,11 @@ namespace Debugger.IDE {
                         {
                             Tag = aFile.Path,
                             Header = grid,
-                            Content = obj,
+                            Content = externalControl.Control,
                         });
                         ((TabItem)tabs.Items[tabs.Items.Count - 1]).MouseUp += EditorTabs_MouseUp;
                         tabs.SelectedItem = tabs.Items[tabs.Items.Count - 1];
-                        break;
+                        return null;
                     }
                 }
                 return null;
@@ -132,7 +132,7 @@ namespace Debugger.IDE {
                     if (editor.IsDirty)
                     {
                         MessageBoxResult res = ModernDialog.ShowMessage("Save file changes before closing?", "Close?", MessageBoxButton.YesNoCancel);
-                        if (res == MessageBoxResult.OK)
+                        if (res == MessageBoxResult.Yes)
                         {
                             editor.Save();
                         }
@@ -142,13 +142,17 @@ namespace Debugger.IDE {
                 }
                 else
                 {
-                    string tagString = item.Tag.ToString(); //stored filepath in tag, above
-                    foreach (PluginLib.IFileEditor fileEditor in PluginManager.inst().FileEditors)
-                    {
-                        if (fileEditor.CanEditFile(tagString, System.IO.Path.GetExtension(tagString)))
+                    if (item.Content is Control && ((Control)item.Content).Tag is PluginLib.IExternalControlData) {
+                        PluginLib.IExternalControlData data = ((Control)item.Content).Tag as PluginLib.IExternalControlData;
+                        if (data.IsDirty)
                         {
-                            //\todo should the file editor have an opportunity to do something?
-                            break;
+                            MessageBoxResult res = ModernDialog.ShowMessage("Save file changes before closing?", "Close?", MessageBoxButton.YesNoCancel);
+                            if (res == MessageBoxResult.Yes)
+                            {
+                                data.SaveData();
+                            }
+                            else if (res == MessageBoxResult.Cancel)
+                                return;
                         }
                     }
                 }
@@ -160,6 +164,7 @@ namespace Debugger.IDE {
             if (e.ChangedButton == MouseButton.Middle) {
                 if (sender is TabItem) {
                     IDEEditor editor = (sender as TabItem).Content as IDEEditor;
+                    TabItem item = sender as TabItem;
                     if (editor != null)
                     {
                         if (editor.IsDirty)
@@ -175,7 +180,20 @@ namespace Debugger.IDE {
                     }
                     else
                     {
-                        //\todo should IFileEditor get a chance?
+                        if (item.Content is Control && ((Control)item.Content).Tag is PluginLib.IExternalControlData)
+                        {
+                            PluginLib.IExternalControlData data = ((Control)item.Content).Tag as PluginLib.IExternalControlData;
+                            if (data.IsDirty)
+                            {
+                                MessageBoxResult res = ModernDialog.ShowMessage("Save file changes before closing?", "Close?", MessageBoxButton.YesNoCancel);
+                                if (res == MessageBoxResult.Yes)
+                                {
+                                    data.SaveData();
+                                }
+                                else if (res == MessageBoxResult.Cancel)
+                                    return;
+                            }
+                        }
                     }
                     tabs.Items.Remove(sender);
                 }

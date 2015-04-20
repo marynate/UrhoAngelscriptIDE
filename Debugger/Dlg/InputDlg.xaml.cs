@@ -38,6 +38,7 @@ namespace Debugger.Dlg {
                 OkButton,
                 CancelButton
             };
+            txtInput.Focus();
         }
 
         public string GetText() {return txtInput.Text;}

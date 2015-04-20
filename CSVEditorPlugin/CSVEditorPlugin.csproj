@@ -44,6 +44,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSVControlData.cs" />
     <Compile Include="CSVFileEditor.cs" />
     <Compile Include="DataTableBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -10,7 +10,11 @@
         <TreeView Name="globalTree" ItemsSource="{Binding Children}">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type json:JWrapper}" ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=ToolTip}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=ToolTip}"/>
+                        <TextBlock Text=" : " Visibility="{Binding Path=ToolTip.Length}"/>
+                        <TextBlock Text="{Binding Path=ToolTip}" />
+                    </StackPanel>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type json:JLeaf}">
                     <StackPanel Orientation="Horizontal" Tag="{Binding}">

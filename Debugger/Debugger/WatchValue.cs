@@ -41,7 +41,13 @@ namespace Debugger.Debug {
                 OnPropertyChanged("Variable");
             } 
         }
-        public string Value { get { return evaluatedAs_; } set { evaluatedAs_ = value; OnPropertyChanged("Value"); } }
+        public string Value { 
+            get { return evaluatedAs_; } 
+            set { 
+                evaluatedAs_ = value; 
+                OnPropertyChanged("Value"); 
+            } 
+        }
         public JLeaf lastResolvedAs;
 
         public bool Evaluate(JWrapper root) {

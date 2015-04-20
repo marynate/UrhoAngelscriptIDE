@@ -12,17 +12,29 @@ namespace Debugger {
     /// Extension methods for AvalonEdit
     /// </summary>
     public static class AvalonExtensions {
+        static readonly char[] BREAKCHARS_LEFT = { '(', ')', ':', ' ', ',', '!' };
+        static readonly char[] BREAKCHARS_RIGHT = { '(', ')', ':', ' ', ',', '!', '.' };
+
+        static bool StringContainsBreaks(string str, bool leftward)
+        {
+            for (int i = 0; i < (leftward ? BREAKCHARS_LEFT.Length : BREAKCHARS_RIGHT.Length); ++i)
+                if (str.Contains((leftward ? BREAKCHARS_LEFT[i] : BREAKCHARS_RIGHT[i])))
+                    return true;
+            return false;
+        }
+
         public static string GetWordUnderMouse(this TextDocument document, TextViewPosition position, bool cancelDot) {
             string wordHovered = string.Empty;
-            var line = position.Line;
-            var column = position.Column;
-            var offset = document.GetOffset(line, column);
+            int line = position.Line;
+            int column = position.Column;
+            int offset = document.GetOffset(line, column);
             if (offset >= document.TextLength)
                 offset--;
-            var textAtOffset = document.GetText(offset, 1);
+            string textAtOffset = document.GetText(offset, 1);
 
             // Get text backward of the mouse position, until the first space
-            while (!string.IsNullOrWhiteSpace(textAtOffset)) {
+            while (!string.IsNullOrWhiteSpace(textAtOffset) && !StringContainsBreaks(textAtOffset, true))
+            {
                 wordHovered = textAtOffset + wordHovered;
                 offset--;
                 if (offset < 0)
@@ -36,7 +48,7 @@ namespace Debugger {
                 offset++;
 
                 textAtOffset = document.GetText(offset, 1);
-                while (!string.IsNullOrWhiteSpace(textAtOffset) && (!cancelDot || !(textAtOffset.Equals(".")))) {
+                while (!string.IsNullOrWhiteSpace(textAtOffset) && !StringContainsBreaks(textAtOffset, false)) {
                     wordHovered = wordHovered + textAtOffset;
                     offset++;
                     if (offset >= document.TextLength)
